@@ -9,12 +9,11 @@ from Bio import AlignIO, SeqIO
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 
-def run_Muscle(protRecords, nuclRecords, inProts, \
+def run_muscle(prot_records, nuclRecords, inProts, \
                outProts, trim = True, rm_bad = False):
     '''
     simple function that runs Muscle.
     '''
-    bad = ''
     bads = []
     protFile = open(inProts,'w')
     SeqIO.write(protRecords,protFile,'fasta')
