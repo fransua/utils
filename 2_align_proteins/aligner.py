@@ -16,45 +16,8 @@ def main():
     '''
     main function when called by command line.
     '''
-    parser = OptionParser(
-        version=__title__,
-        usage="%prog [options] file [options [file ...]]",
-        description="""\
-Reads sequeneces from file fasta format, align them.
-"""
-        )
-    parser.add_option('-i', dest='fastafile', metavar="PATH", \
-                      help='path to input file in fasta format')
-    parser.add_option('-o', dest='outfile', metavar="PATH", \
-                      help='path to output file in fasta format')
-    parser.add_option('--musclepath', dest='muscle_bin', \
-                      metavar="PATH", help=\
-                      'path to muscle binary. [default: %default]', \
-                      default='/usr/bin/muscle')
-    parser.add_option('--trimalpath', dest='trimal_bin', \
-                      metavar="PATH", help=\
-                      'path to trimal binary. [default: %default]', \
-                      default='/usr/local/bin/trimal')
-    parser.add_option('--resoverlap', dest='resovlp', \
-                      metavar="PATH", default='0.7', help=\
-                      '''Minimum overlap of a positions with other positions
-                      in the column to be considered a "good position".
-                      (see trimAl User Guide). [default: %default]''')
-    parser.add_option('--seqoverlap', dest='seqovlp', \
-                      metavar="PATH", default='70', help=\
-                      '''Minimum percentage of "good positions" that a
-                      sequence must have in order to be conserved.
-                      (see trimAl User Guide). [default: %default]''')
-    parser.add_option('-t', '--translate', action='store_true', \
-                      dest='only_translate', default=False, \
-                      help='do not align just translate fasta.')
-    parser.add_option('-r', '--remove_stop', action='store_false', \
-                      dest='remove_stop', default=True, \
-                      help='do not align just translate fasta.')
-    opts = parser.parse_args()[0]
-    if not opts.outfile or not opts.fastafile:
-        exit(parser.print_help())
 
+    opts = get_options()
     seqs     = {}
     for seq in read_fasta(opts.fastafile):
         seq['trseq'] = translate(seq['seq'], stop=opts.remove_stop)
@@ -80,19 +43,25 @@ Reads sequeneces from file fasta format, align them.
 
     ###########
     # TRIM
-    system(opts.trimal_bin + \
-              ' -in %s -out %s -resoverlap %s -seqoverlap %s -cons 100' \
-              % (aali_path, trim_path, opts.resovlp, opts.seqovlp))
+    if opts.trim:
+        system(opts.trimal_bin + \
+               ' -in %s -out %s -resoverlap %s -seqoverlap %s -cons 100' \
+               % (aali_path, trim_path, opts.resovlp, opts.seqovlp))
 
-    for seq in read_fasta(trim_path):
-        seqs[seq['name']]['ali'] = seq['seq']
+        for seq in read_fasta(trim_path):
+            seqs[seq['name']]['ali'] = seq['seq']
+        
+        trimmed = filter (lambda x: not seqs[x].has_key('ali'), seqs)
+        if not opts.quiet:
+            print >> stderr, 'WARNING: trimmed sequences: \n\t' + \
+                  '\n\t'.join(trimmed)
 
-    trimmed = filter (lambda x: not seqs[x].has_key('ali'), seqs)
-    print >> stderr, 'WARNING: trimmed sequences: \n\t' + '\n\t'.join(trimmed)
-
-    for s in seqs.keys():
-        if s in trimmed:
-            del(seqs[s])
+        for s in seqs.keys():
+            if s in trimmed:
+                del(seqs[s])
+    else:
+        for seq in read_fasta(aali_path):
+            seqs[seq['name']]['ali'] = seq['seq']
 
     ###########
     # MAP
@@ -165,6 +134,59 @@ def divide(seq, size=3, rm_cod = True):
         else :
             codons.append(seq[i:i+size])
     return codons
+
+def get_options():
+    '''
+    parse option from call
+    '''
+    parser = OptionParser(
+        version=__title__,
+        usage="%prog [options] file [options [file ...]]",
+        description="""\
+Reads sequeneces from file fasta format, align them.
+"""
+        )
+    parser.add_option('-i', dest='fastafile', metavar="PATH", \
+                      help='path to input file in fasta format')
+    parser.add_option('-o', dest='outfile', metavar="PATH", \
+                      help='path to output file in fasta format')
+    parser.add_option('-t', '--trim', action='store_true', \
+                      dest='trim', default=False, \
+                      help='[%default] trim alignment with trimAl.')
+    parser.add_option('--musclepath', dest='muscle_bin', \
+                      metavar="PATH", help=\
+                      '[%default] path to muscle binary.', \
+                      default='/usr/bin/muscle')
+    parser.add_option('--trimalpath', dest='trimal_bin', \
+                      metavar="PATH", help=
+                      '[%default] path to trimal binary.', \
+                      default='/usr/local/bin/trimal')
+    parser.add_option('--resoverlap', dest='resovlp', \
+                      metavar="FLOAT", default='0.7', help=\
+                      '''[%default] Minimum overlap of a positions with
+                      other positions in the column to be considered a
+                      "good position". (see trimAl User Guide).''')
+    parser.add_option('--seqoverlap', dest='seqovlp', \
+                      metavar="PERCENT", default='70', help=\
+                      '''[%default] Minimum percentage of "good 
+                      positions" that a sequence must have in order to
+                      be conserved. (see trimAl User Guide).''')
+    parser.add_option('--translate', action='store_true', \
+                      dest='only_translate', default=False, \
+                      help=\
+                      '[%default] do not align just translate fasta.')
+    parser.add_option('-q', '--quiet', action='store_false', \
+                      dest='quiet', default=True, \
+                      help='[%default] shut!')
+    parser.add_option('-r', '--remove_stop', action='store_false', \
+                      dest='remove_stop', default=True, \
+                      help=\
+                      '[%default] do not align just translate fasta.')
+    opts = parser.parse_args()[0]
+    if not opts.outfile or not opts.fastafile:
+        exit(parser.print_help())
+    return opts
+
 
 if __name__ == "__main__":
     exit(main())
