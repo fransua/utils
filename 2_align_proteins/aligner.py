@@ -7,16 +7,15 @@ from os import system
 from re import match, split
 from translate import translate
 from sys import stderr
+from subprocess import Popen, PIPE
 
 __version__ = "0.2"
 __title__   = "aligner v%s" % __version__
 
 def main():
-
     '''
     main function when called by command line.
     '''
-
     opts = get_options()
 
     seqs     = {}
@@ -27,7 +26,8 @@ def main():
     prot_path   = opts.outfile + '_prot'
     aali_path   = opts.outfile + '_aa_ali'
     ali_path    = opts.outfile + '_ali'
-    trim_path   = opts.outfile + '_trim'
+    trimsq_path = opts.outfile + '_trimseq'
+    trimcl_path = opts.outfile + '_trimcol'
     score_path  = opts.outfile + '_score'
     map_path    = opts.outfile + '_map'
 
@@ -44,13 +44,13 @@ def main():
               )
 
     ###########
-    # TRIM
-    if opts.trim:
+    # TRIM SEQS
+    if opts.trimseq:
         system(opts.trimal_bin + \
                ' -in %s -out %s -resoverlap %s -seqoverlap %s -cons 100' \
-               % (aali_path, trim_path, opts.resovlp, opts.seqovlp))
+               % (aali_path, trimsq_path, opts.resovlp, opts.seqovlp))
 
-        for seq in read_fasta(trim_path):
+        for seq in read_fasta(trimsq_path):
             seqs[seq['name']]['ali'] = seq['seq']
         
         trimmed = filter (lambda x: not seqs[x].has_key('ali'), seqs)
@@ -61,14 +61,37 @@ def main():
         for s in seqs.keys():
             if s in trimmed:
                 del(seqs[s])
+        aali_path = trimsq_path
     else:
         for seq in read_fasta(aali_path):
             seqs[seq['name']]['ali'] = seq['seq']
 
     ###########
-    # MAP
-    seqs  = map2codons(seqs)
+    # CODON MAP
+    seqs = map2codons(seqs)
 
+    ###########
+    # TRIM SEQS
+    if opts.trimcol:
+        proc = Popen([opts.trimal_bin, '-in', aali_path, '-out', trimcl_path, \
+                      '-automated1', '-colnumbering'], stdout=PIPE)
+        (keeplist, err) = proc.communicate()
+        if err is not None: exit('ERROR: trimming columns.')
+
+        keeplist = str (keeplist).strip().split(', ')
+
+        #algt = get_alignment(seqs)
+        for s in seqs:
+            codons = divide (seqs[s]['codons'], rm_cod=False)
+            for c in range (len (codons)):
+                if not str(c) in keeplist and codons[c] != '---':
+                    codons[c] = 'NNN'
+            seqs[s]['codons'] = ''.join(codons)
+
+            
+    ###########
+    # SEQ MAP
+        
     if opts.printmap:
         _printmap(seqs, map_path, opts.pymap)
 
@@ -101,7 +124,7 @@ def _printmap(seqs, map_path, pymap=True):
         out.write('%-20s' % (seqs[s]['name'])+' '.join(codons)+'\n\n')
     out.close()
 
-def get_alignment(seqs):
+def get_alignment(seqs, typ='codons'):
     '''
     returns alignment from file
     '''
@@ -176,6 +199,7 @@ def divide(seq, size=3, rm_cod = True):
             codons.append(seq[i:i+size])
     return codons
 
+
 def get_options():
     '''
     parse option from call
@@ -191,9 +215,12 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       help='path to input file in fasta format')
     parser.add_option('-o', dest='outfile', metavar="PATH", \
                       help='path to output file in fasta format')
-    parser.add_option('-t', '--trim', action='store_true', \
-                      dest='trim', default=False, \
-                      help='[%default] trim alignment with trimAl.')
+    parser.add_option('--trimseqs', action='store_true', \
+                      dest='trimseq', default=False, \
+                      help='[%default] remove bad sequences with trimAl.')
+    parser.add_option('-t', '--trimcols', action='store_true', \
+                      dest='trimcol', default=False, \
+                      help='[%default] remove bad columns with trimAl.')
     parser.add_option('-M', '--printmap', action='store_true', \
                       dest='printmap', default=False, \
                       help=\
