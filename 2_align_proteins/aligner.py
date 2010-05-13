@@ -5,10 +5,10 @@
 from optparse import OptionParser
 from os import system
 from re import match, split
-from utils import translate
+from translate import translate
 from sys import stderr
 
-__version__ = "0.1_beta"
+__version__ = "0.2"
 __title__   = "aligner v%s" % __version__
 
 def main():
