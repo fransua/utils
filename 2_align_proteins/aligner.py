@@ -38,17 +38,34 @@ def main():
 
     ###########
     # ALIGN
-    system(opts.muscle_bin + ' -stable -quiet -maxiters 999 -maxhours 24 ' + \
-              '-maxtrees 100 -noanchors -in %s -out %s -scorefile %s '\
-              % (prot_path, aali_path, score_path)
-              )
-
+    proc = Popen([opts.muscle_bin,
+                  '-stable',
+                  '-quiet',
+                  '-noanchors',
+                  '-maxiters' , '999',
+                  '-maxhours' , '24 ',
+                  '-maxtrees' , '100',
+                  '-in'       , prot_path,
+                  '-out'      , aali_path,
+                  '-scorefile', score_path
+                  ], stdout=PIPE)
+    if proc.communicate()[1] is not None:
+        print >> stderr, proc.communicate()[0]
+        exit('\nERROR: runninge muscle')
+    
     ###########
     # TRIM SEQS
     if opts.trimseq:
-        system(opts.trimal_bin + \
-               ' -in %s -out %s -resoverlap %s -seqoverlap %s -cons 100' \
-               % (aali_path, trimsq_path, opts.resovlp, opts.seqovlp))
+        proc = Popen([opts.trimal_bin,
+                      '-in'        , aali_path,
+                      '-out'       , trimsq_path,         
+                      '-resoverlap', opts.resovlp,
+                      '-seqoverlap', opts.seqovlp,
+                      '-cons'      , '100'
+                      ], stdout=PIPE)
+        if proc.communicate()[1] is not None:
+            print >> stderr, proc.communicate()[0]
+            exit('\nERROR: runninge muscle')
 
         for seq in read_fasta(trimsq_path):
             seqs[seq['name']]['ali'] = seq['seq']
@@ -71,10 +88,15 @@ def main():
     seqs = map2codons(seqs)
 
     ###########
-    # TRIM SEQS
+    # TRIM COLS
     if opts.trimcol:
-        proc = Popen([opts.trimal_bin, '-in', aali_path, '-out', trimcl_path, \
-                      '-automated1', '-colnumbering'], stdout=PIPE)
+        proc = Popen([opts.trimal_bin,
+                      '-in', aali_path,
+                      '-out', trimcl_path, 
+                      '-automated1',
+                      '-colnumbering'
+                      ], stdout=PIPE)
+        
         (keeplist, err) = proc.communicate()
         if err is not None: exit('ERROR: trimming columns.')
 
@@ -123,15 +145,6 @@ def _printmap(seqs, map_path, pymap=True):
                                       range (len (prestring))))+'\n')
         out.write('%-20s' % (seqs[s]['name'])+' '.join(codons)+'\n\n')
     out.close()
-
-def get_alignment(seqs, typ='codons'):
-    '''
-    returns alignment from file
-    '''
-    keyseqs   = sorted(seqs.keys())
-    seqlist   = map(lambda x: divide(seqs[x]['codons'], rm_cod=False), keyseqs)
-    align = zip( *seqlist )
-    return align
 
 def map2codons(seqs):
     '''
@@ -215,12 +228,13 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       help='path to input file in fasta format')
     parser.add_option('-o', dest='outfile', metavar="PATH", \
                       help='path to output file in fasta format')
-    parser.add_option('--trimseqs', action='store_true', \
+    parser.add_option('-t', '--trimseqs', action='store_true', \
                       dest='trimseq', default=False, \
-                      help='[%default] remove bad sequences with trimAl.')
-    parser.add_option('-t', '--trimcols', action='store_true', \
+                      help='[%default] remove bad sequences (uses trimAl).')
+    parser.add_option('-m', '--maskcols', action='store_true', \
                       dest='trimcol', default=False, \
-                      help='[%default] remove bad columns with trimAl.')
+                      help=\
+                      '[%default] mask (with "N") bad columns (uses trimAl).')
     parser.add_option('-M', '--printmap', action='store_true', \
                       dest='printmap', default=False, \
                       help=\
