@@ -3,7 +3,6 @@
 # Creation Date: 2010/05/10 14:17:46
 
 from optparse import OptionParser
-from os import system
 from re import match, split
 from translate import translate
 from sys import stderr
@@ -30,7 +29,8 @@ def main():
     trimcl_path = opts.outfile + '_trimcol'
     score_path  = opts.outfile + '_score'
     map_path    = opts.outfile + '_map'
-
+    todel       = [prot_path]
+    
     write_fasta(seqs, prot_path, clean=True, typ='trseq')
 
     if opts.only_translate:
@@ -47,8 +47,8 @@ def main():
                   '-maxtrees' , '100',
                   '-in'       , prot_path,
                   '-out'      , aali_path,
-                  '-scorefile', score_path
-                  ], stdout=PIPE)
+                  '-scorefile', score_path # must be last!!! because option...
+                  ][:None if opts.score else -2], stdout=PIPE)
     if proc.communicate()[1] is not None:
         print >> stderr, proc.communicate()[0]
         exit('\nERROR: runninge muscle')
@@ -56,9 +56,10 @@ def main():
     ###########
     # TRIM SEQS
     if opts.trimseq:
+        todel.append(trimsq_path)
         proc = Popen([opts.trimal_bin,
                       '-in'        , aali_path,
-                      '-out'       , trimsq_path,         
+                      '-out'       , trimsq_path,
                       '-resoverlap', opts.resovlp,
                       '-seqoverlap', opts.seqovlp,
                       '-cons'      , '100'
@@ -90,13 +91,14 @@ def main():
     ###########
     # TRIM COLS
     if opts.trimcol:
+        todel.append(trimcl_path)
         proc = Popen([opts.trimal_bin,
-                      '-in', aali_path,
+                      '-in' , aali_path,
                       '-out', trimcl_path, 
                       '-automated1',
                       '-colnumbering'
                       ], stdout=PIPE)
-        
+
         (keeplist, err) = proc.communicate()
         if err is not None: exit('ERROR: trimming columns.')
 
@@ -110,14 +112,14 @@ def main():
                     codons[c] = 'NNN'
             seqs[s]['codons'] = ''.join(codons)
 
-            
     ###########
     # SEQ MAP
-        
     if opts.printmap:
         _printmap(seqs, map_path, opts.pymap)
+    write_fasta(seqs, ali_path, clean=opts.clean, typ='codons')
 
-    write_fasta(seqs, ali_path, clean=True, typ='codons')
+    Popen(['rm', '-f'] + todel, stdout=PIPE)
+
 
 def _printmap(seqs, map_path, pymap=True):
     '''
@@ -265,6 +267,12 @@ Reads sequeneces from file fasta format, and align acording to translation.
     parser.add_option('-q', '--quiet', action='store_false', \
                       dest='quiet', default=True, \
                       help='[%default] shut!')
+    parser.add_option('-c', '--cleannames', action='store_false', \
+                      dest='clean', default=True, \
+                      help='[%default] removes sequence decription.')
+    parser.add_option('--musclescore', action='store_true', \
+                      dest='score', default=False, \
+                      help='[%default] generate muscle score file.')
     parser.add_option('-r', '--remove_stop', action='store_false', \
                       dest='remove_stop', default=True, \
                       help=\
