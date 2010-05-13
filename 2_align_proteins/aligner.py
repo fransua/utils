@@ -3,7 +3,8 @@
 # Creation Date: 2010/05/10 14:17:46
 
 from optparse import OptionParser
-from re import match, split
+from re import match
+from re import compile as compil
 from sys import stderr
 from subprocess import Popen, PIPE
 
@@ -104,14 +105,14 @@ def main():
 
         keeplist = str (keeplist).strip().split(', ')
 
-        #algt = get_alignment(seqs)
-        for s in seqs:
-            codons = divide (seqs[s]['codons'], rm_cod=False)
-            for c in range (len (codons)):
-                if not str(c) in keeplist and codons[c] != '---':
-                    codons[c] = 'NNN'
-            seqs[s]['codons'] = ''.join(codons)
-
+        algt = get_alignment(seqs)
+        nnn = compil('[A-Z]{3}')
+        for (col, num) in zip (algt, range (len (algt))):
+            if not str(num) in keeplist:
+                algt[num] = map (lambda x: nnn.sub('NNN', x), col)
+        for (key, seq) in zip (sorted (seqs.keys()), zip (*algt)):
+            seqs[key]['codons'] = ''.join(seq)
+            
     ###########
     # SEQ MAP
     if opts.printmap:
@@ -148,6 +149,17 @@ def _printmap(seqs, map_path, pymap=True):
         out.write('%-20s' % (seqs[s]['name'])+' '.join(codons)+'\n\n')
     out.close()
 
+
+def get_alignment(seqs, typ='codons'):
+    '''
+    returns alignment from file
+    TODO: find better way than zip(*algt) to reverse it
+    '''
+    keyseqs   = sorted(seqs.keys())
+    seqlist   = map(lambda x: divide(seqs[x][typ], rm_cod=False), keyseqs)
+    align = zip( *seqlist )
+    return align
+
 def map2codons(seqs):
     '''
     map amino-acid alignment to nt
@@ -170,6 +182,7 @@ def read_fasta(infile):
     nam   = None
     descr = None
     seq   = ''
+    blank_re = compil('[ \t]')
     for line in open(infile):
         line = line.strip()
         if line.startswith('>'):
@@ -178,12 +191,12 @@ def read_fasta(infile):
                         'descr' : descr,
                         'seq'   : seq
                     }
-            items = split('[ |\t]', line, maxsplit=1)
+            items = blank_re.split(line, maxsplit=1)
             nam   = items[0].lstrip('>')
             descr = items[1] if len (items) == 2 else None
             seq = ''
             continue
-        seq += line
+        seq += blank_re.sub('', line)
     yield { 'name'  : nam,
             'descr' : descr,
             'seq'   : seq
@@ -218,6 +231,7 @@ def translate(sequence, stop=False):
     '''
     little function to translate DNA to protein...
     from: http://python.genedrift.org/
+    TODO: do not look at it too much :S
     '''
     #dictionary with the genetic code
     gencode = {
@@ -235,8 +249,8 @@ def translate(sequence, stop=False):
     'GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G',
     'TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S',
     'TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L',
-    'TAC':'Y', 'TAT':'Y', 'TAA':'0', 'TAG':'0',
-    'TGC':'C', 'TGT':'C', 'TGA':'0', 'TGG':'W',
+    'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
+    'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
     '---':'-'
     }
     ambig = {'Y':['A', 'G'], 'R':['C', 'T'], 'M':['G', 'T'], 'K':['A', 'C'], \
