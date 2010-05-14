@@ -12,19 +12,6 @@ from numpy import exp
 __version__ = "0.0"
 __title__   = "pmodeltest v%s" % __version__
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 models = [ ['-m', '000000'],
            ['-m', '010010'],
            ['-m', '010020'],
@@ -144,14 +131,17 @@ def main():
     print '\n\n Models keeped to build consensus: \n' + \
           ', '.join (map(lambda x: x[0], good_models))
 
-    tree_file = open(opts.algt + '_all_trees', 'w')
+    tree_file = open(opts.path + 'intree', 'w')
     for model, weight in good_models:
         for i in range (weight):
             tree_file.write(results[model]['tree'])
     tree_file.close()
 
-    Popen([opts.consense,
-           ])
+    Popen(['yes | bin/consense'], stdout=PIPE)
+
+    final_tree   = get_tree(path + 'outtree')
+    better_model = ord_aic[0]
+    # FINI!!!! YUJUUUUUUUUUUUUUUUUU
 
 # number of parameters = X (nb of branches) + 1 (topology) + Y (model)
 
