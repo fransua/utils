@@ -1,0 +1,263 @@
+Doing JC
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing JC+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing JC+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing JC+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing F81
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f e -o tl
+ExitValue: 0
+Doing F81+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f e -v e -o tl
+ExitValue: 0
+Doing F81+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing F81+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 000000 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing K80
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing K80+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing K80+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing K80+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing HKY
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f e -o tl
+ExitValue: 0
+Doing HKY+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f e -v e -o tl
+ExitValue: 0
+Doing HKY+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing HKY+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010010 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TrNef
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TrNef+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TrNef+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TrNef+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TrN
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f e -o tl
+ExitValue: 0
+Doing TrN+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f e -v e -o tl
+ExitValue: 0
+Doing TrN+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TrN+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010020 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM1
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TPM1+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TPM1+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM1+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM1uf
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f e -o tl
+ExitValue: 0
+Doing TPM1uf+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f e -v e -o tl
+ExitValue: 0
+Doing TPM1uf+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM1uf+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012210 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM2
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TPM2+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TPM2+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM2+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM2uf
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f e -o tl
+ExitValue: 0
+Doing TPM2uf+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f e -v e -o tl
+ExitValue: 0
+Doing TPM2uf+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM2uf+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010212 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM3
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TPM3+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TPM3+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM3+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM3uf
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f e -o tl
+ExitValue: 0
+Doing TPM3uf+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f e -v e -o tl
+ExitValue: 0
+Doing TPM3uf+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TPM3uf+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012012 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM1ef
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TIM1ef+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TIM1ef+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM1ef+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM1
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f e -o tl
+ExitValue: 0
+Doing TIM1+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f e -v e -o tl
+ExitValue: 0
+Doing TIM1+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM1+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012230 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM2ef
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TIM2ef+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TIM2ef+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM2ef+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM2
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f e -o tl
+ExitValue: 0
+Doing TIM2+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f e -v e -o tl
+ExitValue: 0
+Doing TIM2+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM2+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 010232 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM3ef
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TIM3ef+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TIM3ef+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM3ef+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM3
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f e -o tl
+ExitValue: 0
+Doing TIM3+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f e -v e -o tl
+ExitValue: 0
+Doing TIM3+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TIM3+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012032 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TVMef
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing TVMef+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing TVMef+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing TVMef+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing TVM
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f e -o tl
+ExitValue: 0
+Doing TVM+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f e -v e -o tl
+ExitValue: 0
+Doing TVM+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing TVM+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012314 -f e -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing SYM
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f 0.25 0.25 0.25 0.25 -o tl
+ExitValue: 0
+Doing SYM+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f 0.25 0.25 0.25 0.25 -v e -o tl
+ExitValue: 0
+Doing SYM+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f 0.25 0.25 0.25 0.25 -c 4 -a e -o tl
+ExitValue: 0
+Doing SYM+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f 0.25 0.25 0.25 0.25 -v e -c 4 -a e -o tl
+ExitValue: 0
+Doing GTR
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f e -o tl
+ExitValue: 0
+Doing GTR+I
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f e -v e -o tl
+ExitValue: 0
+Doing GTR+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f e -c 4 -a e -o tl
+ExitValue: 0
+Doing GTR+I+G
+Command line =  -i data.phy -d nt -n 1 -b 0 -m 012345 -f e -v e -c 4 -a e -o tl

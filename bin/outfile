@@ -1,0 +1,52 @@
+
+Consensus tree program, version 3.67
+
+Species in order: 
+
+  1. P5
+  2. P4
+  3. P6
+  4. P1
+  5. P3
+  6. P2
+
+
+Sets included in the consensus tree
+
+Set (species in order)     How many times out of  999.00
+
+..**..                     999.00
+....**                     999.00
+.***..                     508.00
+
+
+Sets NOT included in consensus tree:
+
+Set (species in order)     How many times out of  999.00
+
+..****                     491.00
+
+
+Extended majority rule consensus tree
+
+CONSENSUS TREE:
+the numbers on the branches indicate the number
+of times the partition of the species into the two sets
+which are separated by that branch occurred
+among the trees, out of 999.00 trees
+
+  +---------------------------P5
+  |
+  |             +-------------P4
+  |      +508.0-|
+  |      |      |      +------P6
+  |      |      +999.0-|
+  +------|             +------P1
+         |
+         |             +------P2
+         +-------999.0-|
+                       +------P3
+
+
+  remember: this is an unrooted tree!
+
