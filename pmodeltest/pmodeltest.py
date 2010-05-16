@@ -8,6 +8,7 @@ from optparse import OptionParser
 from subprocess import Popen, PIPE
 from re import match
 from numpy import exp
+from consensus import consensus
 
 __version__ = "0.0"
 __title__   = "pmodeltest v%s" % __version__
@@ -85,7 +86,7 @@ def main():
                                        model + freqs[freq] + \
                                        invts[inv] + gamma[gam],
                                        stdout=PIPE).communicate()
-                    (numspe, lnl) = parse_stats(opts.algt + '_phyml_stats.txt')
+                    (numspe, lnl, dic) = parse_stats(opts.algt + '_phyml_stats.txt')
                     tree          = get_tree   (opts.algt + '_phyml_tree.txt') 
                     numparam = model_param + \
                                (inv != '') + (gam != '') + numspe*2-3 + 1
@@ -98,7 +99,8 @@ def main():
                     results[model_name + inv + gam] =  { 'AIC' : aic,
                                                          'lnL' : lnl,
                                                          'K'   : numparam,
-                                                         'tree': tree}
+                                                         'tree': tree,
+                                                         'dic' : dic}
 
     # lala
     ord_aic = sorted (map (lambda x: [results[x]['AIC'], x], results.keys()))
@@ -131,10 +133,12 @@ def main():
     print '\n\n Models keeped to build consensus: \n' + \
           ', '.join (map(lambda x: x[0], good_models))
 
-    tree_file = open(opts.path + 'intree', 'w')
+    trees = []
+    tree_file = open(opts.algt + '_intree', 'w')
     for model, weight in good_models:
         for i in range (weight):
             tree_file.write(results[model]['tree'])
+            trees.append(results[model]['tree'])
     tree_file.close()
 
     Popen(['yes | bin/consense'], stdout=PIPE)
@@ -149,12 +153,37 @@ def parse_stats(path):
     '''
     parse stats file of phyml, to extract the likelyhood value
     '''
+    dic = {}
     for line in open(path):
         if line.startswith('. Log-likelihood:'):
-            lnl = float (line.strip().split()[-1])
+            lnl          = float (line.strip().split()[-1])
         elif line.startswith('. Number of taxa:'):
-            numspe = int (line.strip().split()[-1])
-    return (numspe, lnl)
+            numspe       = int (line.strip().split()[-1])
+        elif line.startswith('  - f(A)= '):
+            dic['fA']    = float (line.strip().split()[-1])
+        elif line.startswith('  - f(T)= '):
+            dic['fT']    = float (line.strip().split()[-1])
+        elif line.startswith('  - f(G)= '):
+            dic['fG']    = float (line.strip().split()[-1])
+        elif line.startswith('  - f(C)= '):
+            dic['fC']    = float (line.strip().split()[-1])
+        elif line.startswith('  A <-> C '):
+            dic['rAC']    = float (line.strip().split()[-1])
+        elif line.startswith('  A <-> G'):
+            dic['rAG']    = float (line.strip().split()[-1])
+        elif line.startswith('  A <-> T'):
+            dic['rAT']    = float (line.strip().split()[-1])
+        elif line.startswith('  C <-> G'):
+            dic['rCG']    = float (line.strip().split()[-1])
+        elif line.startswith('  C <-> T'):
+            dic['rCT']    = float (line.strip().split()[-1])
+        elif line.startswith('  C <-> G'):
+            dic['rCG']    = float (line.strip().split()[-1])
+        elif line.startswith('. Proportion of invariant:'):
+            dic['inv']   = float (line.strip().split()[-1])
+        elif line.startswith('  - Gamma shape parameter:'):
+            dic['gamma'] = float (line.strip().split()[-1])
+    return (numspe, lnl, dic)
 
 def get_tree(path):
     '''
