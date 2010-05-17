@@ -187,7 +187,7 @@ def read_fasta(infile):
         if line.startswith('>'):
             if nam is not None:
                 if seq == '':
-                    print >> stderr, 'ERROR: no sequence for ' + nam
+                    print >> stderr, 'ERROR: no sequence for ', str(nam)
                     exit()
                 yield { 'name'  : nam,
                         'descr' : descr,
@@ -199,8 +199,11 @@ def read_fasta(infile):
             seq = ''
             continue
         seq += blank_re.sub('', line)
-    if seq == '':
-        print >> stderr, 'ERROR: no sequence for ' + nam
+    if seq == '' and nam is not None:
+        print >> stderr, 'ERROR: no sequence for ', str(nam)
+        exit()
+    elif seq == '':
+        print >> stderr, 'ERROR: presence of repeated names'
         exit()
     yield { 'name'  : nam,
             'descr' : descr,
