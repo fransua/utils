@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr170/bin/python
 #        Author: Francois-Jose Serra
 # Creation Date: 2010/05/10 14:17:46
 
@@ -186,6 +186,9 @@ def read_fasta(infile):
         line = line.strip()
         if line.startswith('>'):
             if nam is not None:
+                if seq == '':
+                    print >> stderr 'ERROR: no sequence for ' + nam
+                    exit()
                 yield { 'name'  : nam,
                         'descr' : descr,
                         'seq'   : seq
@@ -196,6 +199,9 @@ def read_fasta(infile):
             seq = ''
             continue
         seq += blank_re.sub('', line)
+    if seq == '':
+        print >> stderr 'ERROR: no sequence for ' + nam
+        exit()
     yield { 'name'  : nam,
             'descr' : descr,
             'seq'   : seq
