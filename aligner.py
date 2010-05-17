@@ -187,7 +187,7 @@ def read_fasta(infile):
         if line.startswith('>'):
             if nam is not None:
                 if seq == '':
-                    print >> stderr +'ERROR: no sequence for ' + nam
+                    print >> stderr, 'ERROR: no sequence for ' + nam
                     exit()
                 yield { 'name'  : nam,
                         'descr' : descr,
@@ -200,7 +200,7 @@ def read_fasta(infile):
             continue
         seq += blank_re.sub('', line)
     if seq == '':
-        print >> stderr +'ERROR: no sequence for ' + nam
+        print >> stderr, 'ERROR: no sequence for ' + nam
         exit()
     yield { 'name'  : nam,
             'descr' : descr,
