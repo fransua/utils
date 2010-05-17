@@ -1,4 +1,4 @@
-#!/usr170/bin/python
+#!/usr/bin/python
 #        Author: Francois-Jose Serra
 # Creation Date: 2010/05/10 14:17:46
 
