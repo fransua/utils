@@ -90,11 +90,12 @@ def main():
     ###########
     # TRIM COLS
     if opts.trimcol:
+        way = '-automated1' if opts.trimcolsoft else '-gappyout'
         todel.append(trimcl_path)
         proc = Popen([opts.trimal_bin,
                       '-in' , aali_path,
                       '-out', trimcl_path, 
-                      '-automated1',
+                      way,
                       '-colnumbering'
                       ], stdout=PIPE)
 
@@ -325,6 +326,11 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       dest='trimcol', default=False, \
                       help=\
                       '[%default] mask (with "N") bad columns (uses trimAl).')
+    parser.add_option('--softmasking', action='store_true', \
+                      dest='trimcolsoft', default=False, \
+                      help=\
+                      '''[%default] use soft masking option gappyout in trimAl.
+                      (uses trimAl).''')
     parser.add_option('-M', '--printmap', action='store_true', \
                       dest='printmap', default=False, \
                       help=\
