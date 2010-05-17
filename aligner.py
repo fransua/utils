@@ -348,6 +348,16 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       '''[%default] Minimum percentage of "good 
                       positions" that a sequence must have in order to
                       be conserved. (see trimAl User Guide).''')
+    parser.add_option('--ro', dest='col_resovlp', \
+                      metavar="FLOAT", default='auto', help=\
+                      '''[%default] For columns. Minimum overlap of a
+                      positions with other positions in the column to be
+                      considered a "good position". (see trimAl User Guide).''')
+    parser.add_option('--so', dest='col_seqovlp', \
+                      metavar="PERCENT", default='auto', help=\
+                      '''[%default] For columns Minimum percentage of
+                      "good positions" that a sequence must have in order
+                      to be conserved. (see trimAl User Guide).''')
     parser.add_option('--translate', action='store_true', \
                       dest='only_translate', default=False, \
                       help=\
