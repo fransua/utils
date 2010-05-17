@@ -90,11 +90,12 @@ def main():
     ###########
     # TRIM COLS
     if opts.trimcol:
+        way = '-automated1' if opts.trimcolsoft else '-gappyout'
         todel.append(trimcl_path)
         proc = Popen([opts.trimal_bin,
                       '-in' , aali_path,
                       '-out', trimcl_path, 
-                      '-automated1',
+                      way,
                       '-colnumbering'
                       ], stdout=PIPE)
 
@@ -325,6 +326,11 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       dest='trimcol', default=False, \
                       help=\
                       '[%default] mask (with "N") bad columns (uses trimAl).')
+    parser.add_option('--softmasking', action='store_true', \
+                      dest='trimcolsoft', default=False, \
+                      help=\
+                      '''[%default] use soft masking option gappyout in trimAl.
+                      (uses trimAl).''')
     parser.add_option('-M', '--printmap', action='store_true', \
                       dest='printmap', default=False, \
                       help=\
@@ -348,16 +354,6 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       '''[%default] Minimum percentage of "good 
                       positions" that a sequence must have in order to
                       be conserved. (see trimAl User Guide).''')
-    parser.add_option('--ro', dest='col_resovlp', \
-                      metavar="FLOAT", default='auto', help=\
-                      '''[%default] For columns. Minimum overlap of a
-                      positions with other positions in the column to be
-                      considered a "good position". (see trimAl User Guide).''')
-    parser.add_option('--so', dest='col_seqovlp', \
-                      metavar="PERCENT", default='auto', help=\
-                      '''[%default] For columns Minimum percentage of
-                      "good positions" that a sequence must have in order
-                      to be conserved. (see trimAl User Guide).''')
     parser.add_option('--translate', action='store_true', \
                       dest='only_translate', default=False, \
                       help=\
