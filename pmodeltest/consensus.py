@@ -7,10 +7,6 @@ import os,re
 from ete2 import Tree
 
 
-
-
-
-
 def consensus(trees,weights=[]):
     '''
     returns weighted consensus tree
