@@ -13,6 +13,7 @@ def consensus(trees,weights=[],lim=0):
     50% majority rule
     TODO: fix glup
     '''
+
     if weights == []: weights = [1] * len (trees)
     dic = {}
     outgroup_name = Tree(trees[0]).get_leaf_names()[1]
