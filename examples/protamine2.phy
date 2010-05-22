@@ -1,0 +1,271 @@
+ 30 375
+Mus_spretus_PRM2               ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC GTCAC
+
+Callithrix_jacchus_PRM2        ATGGTCCGAT ACCGTGTGAG GAGCCCGAGC GAACGCCCA- -----CACGA
+                               GGAGTACAGG CAGCTGGTGA ACTGGCAGGA GCAAGGACGT AATGGCCAAG
+                               AAGAGCAGGG GCTAAGCGCA GAAGGTGGCG AGGTCTACGG GAGGACCCAC
+                               CAAGGCTACT CTAGCTATAG GCGCAGGCGC TGCTCTCGCA GGAGGCGGTA
+                               CCGGATTCAC AGAAGACGGA GTCGCTCCTG CAGAAGGCGC AGAAGACGCA
+                               GCTGC----- ---------- ---------- --------CG ATACCGGAGA
+                               AGGCCTCGCA GAGGCTGCAG ATCCAGGAGG AGGAGAAGA- ----------
+                               -------TGC AGAAGGTAC- -----
+
+Homo_sapiens_PRM2              ATGGTCCGAT ACCGCGTGAG GAGCCTGAGC GAACGCTCG- -----CACGA
+                               GGTGTACAGG CAGCAGTTGC ATGGGCAAGA GCAAGGACAC CACGGCCAAG
+                               AGGAGCAAGG GCTGAGCCCG GAGCACGTCG AGGTCTACGA GAGGACCCAT
+                               ---GGCCAGT CTCACTATAG GCGCAGACAC TGCTCTCGAA GGAGGCTGCA
+                               CCGGATCCAC AGGCGGCAGC ATCGCTCCTG CAGAAGGCGC AAAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AAGAGAACA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Mus_spicilegus_PRM2            ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGG CAAGACCATG GACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGAATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCACCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC GTCAC
+
+Rattus_norvegicus_PRM2         ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCAG- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AGCGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGA GCTGAGCCCA GAGCGCGTGG AGGACTATGG GAGGACAGAA
+                               AGGGGCCAC- --CACCACAG ACACAGGCGC TGC------A AGAGGCTTCA
+                               CAGGATCCAC AAGAGGCGC- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GCTGCAGGTG
+                               CAGGAAATGC AGGTGGCACT ATTAT
+
+Pongo_pygmaeus_PRM2            ATGGTCCGAT ACTGTGTGAG GAGCCTGAGC GAACGCTCG- -----CACGA
+                               GGTGTACGGG CAGCAGTTGC ATGGGCAAGA GCAAGGACAC CATGACCAAG
+                               AGGAGCAAGG ACTGAGCCCG GAGCAGGTCG AGGTCTACGA GAGGACCCAG
+                               ---GGCCATT CTCACTATAG ACGCAGGCAC TGCTCTCGAA GGAGGCTGCA
+                               CCGGATCCAC AGACAGCAGC ATCGCTCCTG CAAAAGGCGC AGAAGACACT
+                               CCTGT----- ---------- ---------- --------AG GCACCGGAGG
+                               AAGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAACA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Cavia_porcellus_PRM2           ---------- ---------- ---------- ---------- ----------
+                               ---------- ---------G AGGGCCAGGA GCAG------ ----------
+                               --GAGCAGCG GCTGAGCCCA GAGCGCGTTG AGGCCTGCGC AAGGACACAC
+                               AGAGGC---- --CACCACAG GCGCAGGTGC TGTTCTCGGA GGAGGCTGTG
+                               CCGGGTCCAC AGGCGGCGGC GCCGGTCCTG CCGAAGGCGC AGGAGACGCA
+                               TC-------- ---------- ---------- ---------- -TACAGGAGG
+                               CGGCATCGAC GAGGCTGCAG AAGCAGGAGG AGGAGAAGA- ----------
+                               -------TGC AGG------- -----
+
+Mus_musculus_domesticus_PRM2   ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGA CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+
+Mus_musculus_musculus_PRM2     ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGA CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTACA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+
+Pan_troglodytes_PRM2           ATGGTCCGAT ACCGCGTGAG GAGCCCGAGC GAACCCTCG- -----CACGA
+                               GGTGTACAGG CAGCAGTTGC ATGGGCAAGA GCAAGGACAC CACGGCCAAG
+                               AGGAGCAAGG GCTGAGCCCG GAGCACGTCG AGGTCTACGA GAGGACCCAC
+                               ---GGCCATT CTCACTATAG GCGCAGACAC TGCTCTCGAA GGAGGCTGCG
+                               TCGGATCCAC AGACAGCAGC ATCGCTCCTG CAGAAGGCGC AAAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AAGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAACA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Hylobates_lar_PRM2             ATGGTCCGAT ACTGCGTGAG GAGCCTGAGC GAACGCTCG- -----CACGA
+                               GGTGTACGGG CAGCAGTTGC GTGGGCAAGA GCAAGGACAC CACGGCCAAG
+                               AGGAGCAAGG GCTGAGCCCG GAGGACGTCG AGGTCTATGA GAGGACCCAC
+                               ---GGCCATT CTCACTATAG GCGCAGGCAC TGCTCTCGAA GGAGGCTGCA
+                               CCGGATCCAC AGACAGCAGC ATCGCTCCTG CGGAAGGCGC CGAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCAGCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAAGA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Alouatta_seniculus_PRM2        ATGGTCCGAT ACCACGTGAG GAGCCCAAGC GAACGCCCA- -----CACAG
+                               GGAGTACAGG CAGCTGGTGA ACGGGCAGGA GCAAGGACGT CATGGCCAAG
+                               AAGAGCAGGG AATGAGCGCA GAAGGCGTCG AGGGCTACGG GAGGACCCAC
+                               CAAGGCTGCT ATGGCTATAG GCGCAGGCTC TGCTCTCGCA GGAGGCTGTA
+                               CCGGGTCCAC AGACGGCAGC GGCGCTCCTG CAGAAGACGC ---------T
+                               GCTGC----- ---------- ---------- --------AG ATACCGGAGG
+                               AGGAATCGCA GAGGCTGCAG AACC---AGG AGGAGAACA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Sus_scrofa_PRM2                ATGGTCCGAT GCCGCGTGCG GAGTCCGAGT GAAAGTCCG- -----CAGCA
+                               GGGCTCTGGG CAGCAGCGCG AAAACGAGCG CCAGGAC--- ---------C
+                               AGGACCAGGA GCTGAGGCCG GAGGATGTCC CGGTCTATGG CAGGACCCAC
+                               AGGGGCCGCT ACCACTACAG ACACAGGAGC CACACGCGGC GGCGC-----
+                               ---------- ---------- --CGCTCCTG CCGGAGGCGC AGGAGACGCG
+                               CCTGC----- ---------- ---------- --------CG GCAC---AGG
+                               CGGCACCGCA GAGGCTGCAG ACGGATCAGG AGGAGGAGA- ----------
+                               ----AGATGC AGAAGGAGGC TC---
+
+Mus_cookii_PRM2                ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCA- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CTACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+
+Mus_famulus_PRM2               ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC GTCAC
+
+Rattus_fuscipes_PRM2           ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCT- -----CACCA
+                               GGGTCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGA GCTGAGCCCA GAGCGCGTGG AGGACTATGG GAGGACACAC
+                               AGGGGC---- --CACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTTCA
+                               CAGGATCCAC AAGAGGCGC- --CGATCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------TG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAAGTG
+                               CAGGAAATGC AGGAGGCACT GTCAC
+
+Rattus_tunneyi_PRM2            ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGAGTCCG- -----CACCA
+                               GGGTCCTGGG CAAGACCATG AAAGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGA GCTGAACCCA GAGCGCGTGG AGGACTATGG GAGGACACAC
+                               AGGGGC---- --CACCACAG ACACAGGCGC TGTTCTCGTA AGAGGCTTCA
+                               CAGGATCCAC AAGAGGCGC- --CGATCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------TG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGC AGGAGGCAGT GTCAC
+
+Pan_paniscus_PRM2              ATGGTCCGAT ACCGCGTGAG GAGCCCGAGC GAACCCTCG- -----CACGA
+                               GGTGTACAGG CAGCAGTTGC ATGGGCAAGA GCAAGGACAC CACGGCCAAG
+                               AGGAGCAAGG GCTGAGCCCG GAGCACGTCG AGGTCTACGA GAGGACCCAT
+                               ---GGCCATT CTCACTATAG GCGCAGACAC TGCTCTCGAA GGAGGCTGCG
+                               CCGGATCCAC AGACAGCAGC ATCGCTCCTG CAGAAGGCGC AAAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAACA- ----------
+                               -------TGC AGAAAGCAC- -----
+
+Mesocricetus_auratus_PRM2      ATGGTTCGTT ACCGAATGAG GAGCCCCAGT GAGCGTCCG- -----CACCA
+                               GGGGCCTGGG CAAGAACATG GACGTGAAGA GCAAGGG--- ---------C
+                               AGGGGCAAGG GTTGAGCCCA GAGCGTGTGG AGGACTATGG GAGGACACAC
+                               AGGGGCCAAC ACCACCACAG A---CGTCGC TGCTCGCGTA GGAAGCTGTA
+                               CCGAATCCAC AGGAGGCGC- --CGGTCATG CAGGAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG TCACAGGAGA
+                               CGGCATCGCA GAGGCTGCAG AAGATCACGC AGGAGGAGGA GATGCAGGTG
+                               CAGGAGGTGT AGGAGGCACC ACCAC
+
+Macaca_nemestrina_PRM2         ATGGTCCGAT ACCGCATGAG GAGCCTGAGC GAACGCCCG- -----CACGA
+                               GGTGCACGGG CAGCAGGTGC ATGGGCAAGA CCAAGGACAC AACGGCCAAG
+                               AGGAGCAGGG GCTGAACCCG GAGCACGTCG AGGTCTACGA AAGGACCCAC
+                               CGAGGCCACT CTCACCATAG GCGCAGGCGC TGCTCTCGAA GGAGGCTGCA
+                               CCGGATCCAC AGACGGCGGC ATCGCTCCTG CAGAAGGCGC AGAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAAGA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Apodemus_sylvaticus_PRM2       ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCA- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CTACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCGGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+
+Bos_taurus_PRM2                ATGGTCCGAT GCCACGTGAA GAGTCCAACT GAAAGTCCAC CCGGGCAGCA
+                               GGGCTCCGGG CAGCAGGGCG AGACGGAGCA CCCGGAT--- ---------C
+                               AGGCACGGGA GCTGAGGCCG GAAGACATCC CGGTCTACGG GAGGACTCAC
+                               AGAGGCCGCT ACCACTACAG ACACAGG--- ---AGCCACA CGCGCGCCTA
+                               CCGG------ AGGCGCCGGA GAAGGGCCTG CAGGCACAGG AGCCGCAGAG
+                               GTGCGGCGGG CCCCCCCTGC GCTCCCATCC CAGGCACCCC CCAGGCCTCC
+                               AGGCAGGGCT CAGGCTGCCG AAGGATGAGG AGGAGGAGG- ----------
+                               -AGGAGATGC GGAAGGCAGC TC---
+
+Erythrocebus_patas_PRM2        ATGGTCCGAT ACCGCACCAG GAGCCTGAGC GAACGCCCG- -----CACGA
+                               GGTGCACGGG CAGCAGGTGC ACGGGCAAGA CCAAGGACAC AACGGCCAAG
+                               AGGAGCAGGG GCTGAGCCCG GAGCACGTCG AGGTCTACGA AAGGACCCAC
+                               CAAGGCCACT CTCACCATAG GCGCAGGCGC TGCTCTCAAA GGAGGCTGCA
+                               CCGCATCCAC AGACGGCGGC ATCGCTCCTG CAGAAGGCGC AGAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAAGA- ----------
+                               -------TGC AGAAGGTAC- -----
+
+Macaca_mulatta_PRM2            ATGGTCCGAT ACCGAATGAG GAGCCTGAGC GAACGCTCG- -----CACGA
+                               GGTGCACGGG CAGCAGGTGC ATGGGCAAGA CCAAGGACAC AACGGCCAAG
+                               AGGAGCAGGG GCTGAACCCG GAGCACGTCG AGGTCTACGA GAGGACCCAC
+                               ---GGCCACT CTCACTATAG GCGCAGACAC TGCTCTCGAA GGAGGCTGCA
+                               CCGGATCCAC AGACGGCGGC ATCGCTCCTG CAGAAGGCGC AGAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAAGA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Semnopithecus_entellus_PRM2    ATGGTCCGAT ACCGCATGAG GAGCCTGAGC GAACGCCCG- -----CACGA
+                               GGTGCACGGG CAGCAGGTGT ATGGGCAAGA GCAAGGACAC AATGGCCAAG
+                               AGGAGCAGGG GCTGAGCCCG GAGCACGTCG AGGTCTACGA AAGGACCCAC
+                               CAAGGCTACT CTCACCATAG GCGCAGGCGC TGCTCTCGAA GGAGGCTGTA
+                               CCGGATCCAC AGACGGCGGC ATCGCTCCTG CAGAAGGCGC AGAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA GAGGCTGCAG AACC---AGG AGGAGAAGA- ----------
+                               -------TGC AGAAGGTAC- -----
+
+Mus_macedonicus_PRM2           ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGAATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCACCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+
+Gorilla_gorilla_PRM2           ATGGTCCGAT GCCGCGTGAG GAGCCCGAGC GAACGCTCG- -----CACGA
+                               GGTGTACAGG CAGCAGTTGC ATGGGCAAGA GCAAGGACAC CACGGCCAAG
+                               AGGAGCAAGG GCTGAGCCCG GAGCACGTCG AGGTCTACGA GAGGACCCAC
+                               ---GGCCATT CTCACTATAG GCGCAGACAC TGCTCTCAAA GGAGGCTGCG
+                               CCGGATCCAC AGACAGCAGC ATCGCTCCTG CAGAAGGCGC AAAAGACGCT
+                               CCTGC----- ---------- ---------- --------AG GCACCGGAGG
+                               AGGCATCGCA AAGGCTGCAG AACC---AGG AGGAGAACA- ----------
+                               -------TGC AGAAGGCAC- -----
+
+Sigmodon_hispidus_PRM2         ATGGTTCGCT ACCGAACAAG GAGCCCCAGT GAGCATCTG- -----CACCA
+                               GGGGCCTGGG CAAGAACATG GACGGGAAGA ACAGGGG--- ----------
+                               -----CAAGG GCTAAGCCCA GAGCGCGTGG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACCGTCGC TGCTCGCGTA GGAGACTGCA
+                               CCGGATCCAT AAGAGACGT- --CGGTCATG CAGGAGGCGA AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAA AAGATCCCGG AGGAGGAGA- --TGCAGGTG
+                               CAGGAAGTGT AGGAGGCACC ACCAC
+
+Mus_musculus_castaneus_PRM2    ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCG- -----CACCA
+                               GGGGCCTGGA CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTACA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CCACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+
+Mus_pahari_PRM2                ATGGTTCGCT ACCGAATGAG GAGCCCCAGT GAGGGTCCA- -----CACCA
+                               GGGGCCTGGG CAAGACCATG AACGCGAGGA GCAGGGG--- ---------C
+                               AGGGGCAAGG GCTGAGCCCA GAGCGCGTAG AGGACTATGG GAGGACACAC
+                               AGGGGCCACC ACCACCACAG ACACAGGCGC TGCTCTCGTA AGAGGCTGCA
+                               TAGGATCCAC AAGAGGCGT- --CGGTCATG CAGAAGGCGG AGGAGACACT
+                               CCTGC----- ---------- ---------- --------CG CTACAGGAGG
+                               CGGCATCGCA GAGGCTGCAG AAGATCCCGA AGGAGGAGGA GATGCAGGTG
+                               CAGGAAATGT AGGAGGCACC ATCAC
+

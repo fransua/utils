@@ -76,9 +76,9 @@ def main():
                     model_param = modelnames[model[1] + freq][1]
                     print 'Model ' + \
                           model_name + inv + gam
-                    #print 'Command line = ' +\
-                    #     ' '.join(model + freqs[freq] + invts[inv] +gamma[gam])
-                    (out, err) = Popen(['bin/phyml',
+                    print 'Command line = ' +opts.algt+\
+                         ' '.join(model + freqs[freq] + invts[inv] +gamma[gam])
+                    (out, err) = Popen(['bin/phyml', '--sequential', 
                                         '-i', opts.algt,
                                         '-d', 'nt',
                                         '-n', '1',
@@ -141,10 +141,14 @@ def main():
             trees.append(results[model]['tree'])
     tree_file.close()
 
-    Popen(['yes | bin/consense'], stdout=PIPE)
 
-    final_tree   = get_tree(path + 'outtree')
+    #Popen(['yes | bin/consense'], stdout=PIPE)
+
+    #final_tree   = get_tree(path + 'outtree')
     better_model = ord_aic[0]
+
+    print consensus(tress)
+
     # FINI!!!! YUJUUUUUUUUUUUUUUUUU
 
 # number of parameters = X (nb of branches) + 1 (topology) + Y (model)
@@ -192,20 +196,6 @@ def get_tree(path):
     for line in open(path):
         if line.startswith('('):
             return line
-    
-
-
-#def get_alignment(seqs, typ='codons'):
-#    '''
-#    returns alignment from file
-#    TODO: find better way than zip (*algt) to reverse it
-#    '''
-#    keyseqs = sorted(seqs.keys())
-#    div = 3 if typ=='codons' else 1
-#    seqlist   = map(lambda x: divide(seqs[x][typ], size=div), keyseqs)
-#    align = [keyseqs] + zip ( *seqlist)
-#    return align
-
 
 def get_options():
     '''
