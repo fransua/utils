@@ -147,7 +147,7 @@ def main():
     #final_tree   = get_tree(path + 'outtree')
     better_model = ord_aic[0]
 
-    print consensus(tress)
+    print consensus(trees)
 
     # FINI!!!! YUJUUUUUUUUUUUUUUUUU
 
