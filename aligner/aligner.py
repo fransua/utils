@@ -41,25 +41,26 @@ def main():
 
     ###########
     # ALIGN
-    proc = Popen([opts.muscle_bin,
-                  '-quiet',
-                  '-noanchors',
-                  '-maxiters' , '999',
-                  '-maxhours' , '24 ',
-                  '-maxtrees' , '100',
-                  '-in'       , prot_path,
-                  '-out'      , aali_path,
-                  '-scorefile', score_path # must be last!!! because option...
-                  ][:None if opts.score else -2], stdout=PIPE)
-    if proc.communicate()[1] is not None:
-        print >> stderr, proc.communicate()[0]
-        exit('\nERROR: runninge muscle')
-
-    log += '   Muscle command line: \n' + \
-           ' '.join([opts.muscle_bin, '-quiet', '-noanchors', '-maxiters' , \
-                     '999', '-maxhours', '24 ', '-maxtrees', '100', '-in', \
-                     prot_path, '-out', aali_path, '-scorefile', \
-                     score_path][:None if opts.score else -2]) + '\n\n'
+    if not opts.input_ali:
+        proc = Popen([opts.muscle_bin,
+                      '-quiet',
+                      '-noanchors',
+                      '-maxiters' , '999',
+                      '-maxhours' , '24 ',
+                      '-maxtrees' , '100',
+                      '-in'       , prot_path,
+                      '-out'      , aali_path,
+                      '-scorefile', score_path # must be last!!! because option...
+                      ][:None if opts.score else -2], stdout=PIPE)
+        if proc.communicate()[1] is not None:
+            print >> stderr, proc.communicate()[0]
+            exit('\nERROR: runninge muscle')
+        
+        log += '   Muscle command line: \n' + \
+               ' '.join([opts.muscle_bin, '-quiet', '-noanchors', '-maxiters' , \
+                         '999', '-maxhours', '24 ', '-maxtrees', '100', '-in', \
+                         prot_path, '-out', aali_path, '-scorefile', \
+                         score_path][:None if opts.score else -2]) + '\n\n'
 
     ###########
     # TRIM SEQS
@@ -421,6 +422,11 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       help=\
                       '''[%default] Minimum average similarity allowed
                       (see trimAl User Guide).''')
+    parser.add_option('--alignment', dest='input_ali', \
+                      action="store_true", help=\
+                      '''[%default] Infile is already aligned. This option
+                      will unactive muscle alignment process.''', \
+                      default=False)
     parser.add_option('--musclepath', dest='muscle_bin', \
                       metavar="PATH", help=\
                       '[%default] path to muscle binary.', \
