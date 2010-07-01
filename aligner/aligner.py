@@ -151,9 +151,15 @@ def main():
 
         algt = get_alignment(seqs)
         nnn = compil('[A-Z]{3}')
-        for (col, num) in zip (algt, range (len (algt))):
-            if not str(num) in keeplist:
-                algt[num] = map (lambda x: nnn.sub('NNN', x), col)
+        if opts.nogap: 
+            for (col, num) in zip (algt, range (len (algt))):
+                if not str(num) in keeplist:
+                    algt[num] = map (lambda x: nnn.sub('', x), col)
+                    algt[num] = map (lambda x: compil('---').sub('', x), algt[num])
+        else:
+            for (col, num) in zip (algt, range (len (algt))):
+                if not str(num) in keeplist:
+                    algt[num] = map (lambda x: nnn.sub('NNN', x), col)
         for (key, seq) in zip (sorted (seqs.keys()), zip (*algt)):
             seqs[key]['codons'] = ''.join(seq)
             
