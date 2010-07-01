@@ -8,7 +8,7 @@ from re import compile as compil
 from sys import stderr
 from subprocess import Popen, PIPE
 
-__version__ = "0.2"
+__version__ = "0.3"
 __title__   = "aligner v%s" % __version__
 
 def main():
@@ -17,11 +17,14 @@ def main():
     '''
     opts = get_options()
 
+    log = '\n\n'
+
     seqs     = {}
     for seq in read_fasta(opts.fastafile):
         seq['trseq'] = translate(seq['seq'], stop=opts.remove_stop)
         seqs[seq['name']] = seq
 
+    log += '   ' + str (len (seqs)) + ' sequences\n\n'
     prot_path   = opts.outfile + '_prot'
     aali_path   = opts.outfile + '_aa_ali'
     ali_path    = opts.outfile + '_ali'
@@ -52,15 +55,21 @@ def main():
         print >> stderr, proc.communicate()[0]
         exit('\nERROR: runninge muscle')
 
+    log += '   Muscle command line: \n' + \
+           ' '.join([opts.muscle_bin, '-quiet', '-noanchors', '-maxiters' , \
+                     '999', '-maxhours', '24 ', '-maxtrees', '100', '-in', \
+                     prot_path, '-out', aali_path, '-scorefile', \
+                     score_path][:None if opts.score else -2]) + '\n\n'
+
     ###########
     # TRIM SEQS
-    if opts.trimseq:
+    if opts.trimseq != False:
         todel.append(trimsq_path)
         proc = Popen([opts.trimal_bin,
                       '-in'        , aali_path,
                       '-out'       , trimsq_path,
-                      '-resoverlap', opts.resovlp,
-                      '-seqoverlap', opts.seqovlp,
+                      '-resoverlap', str (opts.trimseq[1]),
+                      '-seqoverlap', str (opts.trimseq[2]),
                       '-cons'      , '100'
                       ], stdout=PIPE)
         if proc.communicate()[1] is not None:
@@ -74,14 +83,24 @@ def main():
         if not opts.quiet:
             print >> stderr, 'WARNING: trimmed sequences: \n\t' + \
                   '\n\t'.join(trimmed)
+        if len (trimmed) > 0:
+            log += '->trimmed sequences: \n\t' + \
+                   '\n\t'.join(trimmed) + '\n'
+        else: log += '->no trimmed sequences\n'
 
         for s in seqs.keys():
             if s in trimmed:
                 del(seqs[s])
         aali_path = trimsq_path
+        log += '   Trimal (sequences) command line: \n' + \
+               ' '.join([opts.trimal_bin, '-in', aali_path, '-out',
+                         trimsq_path, '-resoverlap', str (opts.trimseq[1]), \
+                         '-seqoverlap', str (opts.trimseq[2]), '-cons', '100']) \
+                         + '\n\n'
     else:
         for seq in read_fasta(aali_path):
             seqs[seq['name']]['ali'] = seq['seq']
+
 
     ###########
     # CODON MAP
@@ -89,19 +108,43 @@ def main():
 
     ###########
     # TRIM COLS
-    if opts.trimcol:
-        way = '-automated1' if opts.trimcolsoft else '-gappyout'
-        todel.append(trimcl_path)
-        proc = Popen([opts.trimal_bin,
-                      '-in' , aali_path,
-                      '-out', trimcl_path, 
-                      way,
-                      '-colnumbering'
-                      ], stdout=PIPE)
+    if opts.trimcol != 'None':
+        if opts.trimcol == 'specific':
+            todel.append(trimcl_path)
+            proc = Popen([opts.trimal_bin,
+                          '-in' , aali_path,
+                          '-out', trimcl_path, 
+                          '-gt' , str (opts.gaptreshold),
+                          '-st' , str (opts.similarity),
+                          '-colnumbering'
+                          ], stdout=PIPE)
+            (keeplist, err) = proc.communicate()
+            if err is not None:
+                exit('ERROR: trimming columns.')
+            log += '   Trimal (columns) command line: \n' + \
+                   ' '.join([opts.trimal_bin,
+                          '-in', aali_path,
+                          '-out', trimcl_path, 
+                          '-gt', str (opts.gaptreshold),
+                          '-st', str (opts.similarity),
+                          '-colnumbering'
+                          ]) + '\n'
 
-        (keeplist, err) = proc.communicate()
-        if err is not None:
-            exit('ERROR: trimming columns.')
+        else:
+            todel.append(trimcl_path)
+            proc = Popen([opts.trimal_bin,
+                          '-in' , aali_path,
+                          '-out', trimcl_path, 
+                          '-' + opts.trimcol,
+                          '-colnumbering'
+                          ], stdout=PIPE)
+            (keeplist, err) = proc.communicate()
+            if err is not None:
+                exit('ERROR: trimming columns.')
+            log += '   Trimal (columns) command line: \n' + \
+                   ' '.join([opts.trimal_bin, '-in' , aali_path, '-out',
+                             trimcl_path, '-' + opts.trimcol, \
+                             '-colnumbering']) + '\n'
 
         keeplist = str (keeplist).strip().split(', ')
 
@@ -121,6 +164,8 @@ def main():
 
     Popen(['rm', '-f'] + todel, stdout=PIPE)
 
+    if opts.print_log:
+        print log
 
 def _printmap(seqs, map_path, pymap=True):
     '''
@@ -304,6 +349,7 @@ def translate(sequence, stop=False):
     else:
         return proteinseq
 
+
 def get_options():
     '''
     parse option from call
@@ -319,23 +365,62 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       help='path to input file in fasta format')
     parser.add_option('-o', dest='outfile', metavar="PATH", \
                       help='path to output file in fasta format')
-    parser.add_option('-t', '--trimseqs', action='store_true', \
-                      dest='trimseq', default=False, \
-                      help='[%default] remove bad sequences (uses trimAl).')
-    parser.add_option('-m', '--maskcols', action='store_true', \
-                      dest='trimcol', default=False, \
+    parser.add_option('-t', '--trimseqs', action='store_const', const=[True, 0.7, 70], \
+                      dest='trimseq', default=False,\
+                      help=
+                      '''[%default] remove bad sequences (uses trimAl).
+                      By default residue overlap is set to 0.7, and
+                      sequence overlap to 70. Use --resoverlap and
+                      --seqoverlap to change it.
+                      ''')
+    parser.add_option('--resoverlap', dest='trimseq[1]', action="store", \
+                      metavar="FLOAT", default=0.7, type='float', \
                       help=\
-                      '[%default] mask (with "N") bad columns (uses trimAl).')
-    parser.add_option('--softmasking', action='store_true', \
-                      dest='trimcolsoft', default=False, \
+                      '''[%default] Minimum overlap of a positions with
+                      other positions in the column to be considered a
+                      "good position". (see trimAl User Guide).''')
+    parser.add_option('--seqoverlap', dest='trimseq[2]', action="store", \
+                      metavar="PERCENT", default=70, type='int', help=\
+                      '''[%default] Minimum percentage of "good 
+                      positions" that a sequence must have in order to
+                      be conserved. (see trimAl User Guide).''')
+    parser.add_option('--nogap', action='store_true', \
+                      dest='nogap', default=False, \
                       help=\
-                      '''[%default] use soft masking option gappyout in trimAl.
+                      '''[%default] removes all gaps from alignement.
                       (uses trimAl).''')
     parser.add_option('-M', '--printmap', action='store_true', \
                       dest='printmap', default=False, \
                       help=\
                       '''[%default] save a map of alignement not human
                       friendly by default, see "--humanmap" option''')
+    parser.add_option('--maskcol', metavar='OPTION', dest='trimcol', \
+                      default='None', \
+                      choices = ['None', 'automated1', 'softmasking', \
+                                 'gapyout', 'strict', 'strictplus', \
+                                 'specific'], \
+                      help=\
+                      '''[%default] mask (with "N") bad columns (uses
+                      trimAl). Masking options are:
+                         -> None                              
+                         -> automated1                                
+                         -> softmasking                               
+                         -> gapyout                                     
+                         -> strict                                    
+                         -> strictplus                             
+                         -> specific                                  
+                      ''')
+    parser.add_option('--gt', dest='gaptreshold', action="store", \
+                      metavar="FLOAT", default=0, type='float', \
+                      help=\
+                      '''[%default] 1 - (fraction of sequences with a gap
+                      allowed). Only use with specific maskcol option.
+                      (see trimAl User Guide).''')
+    parser.add_option('--st', dest='similarity', action="store", \
+                      metavar="FLOAT", default=0, type='float', \
+                      help=\
+                      '''[%default] Minimum average similarity allowed
+                      (see trimAl User Guide).''')
     parser.add_option('--musclepath', dest='muscle_bin', \
                       metavar="PATH", help=\
                       '[%default] path to muscle binary.', \
@@ -344,16 +429,6 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       metavar="PATH", help=
                       '[%default] path to trimal binary.', \
                       default='/usr/local/bin/trimal')
-    parser.add_option('--resoverlap', dest='resovlp', \
-                      metavar="FLOAT", default='0.7', help=\
-                      '''[%default] Minimum overlap of a positions with
-                      other positions in the column to be considered a
-                      "good position". (see trimAl User Guide).''')
-    parser.add_option('--seqoverlap', dest='seqovlp', \
-                      metavar="PERCENT", default='70', help=\
-                      '''[%default] Minimum percentage of "good 
-                      positions" that a sequence must have in order to
-                      be conserved. (see trimAl User Guide).''')
     parser.add_option('--translate', action='store_true', \
                       dest='only_translate', default=False, \
                       help=\
@@ -371,6 +446,10 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       dest='remove_stop', default=True, \
                       help=\
                       '[%default] remove stop codons from alignment.')
+    parser.add_option('--log', action='store_true', \
+                      dest='print_log', default=False, \
+                      help=\
+                      '[%default] Print aligner Log.')
     parser.add_option('--humanmap', action='store_false', \
                       dest='pymap', default=True, \
                       help=\

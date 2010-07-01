@@ -1,0 +1,84 @@
+
+Consensus tree program, version 3.67
+
+Species in order: 
+
+  1. O cuniculu
+  2. Mus muscul
+  3. Rat
+  4. Sus scrofa
+  5. O aries
+  6. Canis fami
+  7. Felis catu
+  8. Homo sapie
+  9. Green Monk
+  10. Tupaia bel
+
+  11. Chicken
+  12. S.irideus
+  13. Danio reri
+  14. Ictalurus 
+  15. X laevis
+
+
+Sets included in the consensus tree
+
+Set (species in order)     How many times out of  100.00
+
+.......... .***.            100.00
+.......**. .....            100.00
+.......... *****            100.00
+.**....... .....            100.00
+.......*** .....            100.00
+.....**... .....            92.00
+...**..... .....            88.00
+.......... ..**.            77.00
+.......... .****            70.00
+...****... *****            65.00
+.....**... *****            55.00
+
+
+Sets NOT included in consensus tree: NONE
+
+
+Majority rule consensus tree
+
+CONSENSUS TREE:
+the numbers on the branches indicate the number
+of times the partition of the species into the two sets
+which are separated by that branch occurred
+among the trees, out of 100.00 trees
+
+                                                   +------Felis catu
+                       +----------------------92.0-|
+                       |                           +------Canis fami
+                       |
+                       |                    +-------------S.irideus
+                +-55.0-|             +100.0-|
+                |      |             |      |      +------Danio reri
+                |      |      +-70.0-|      +-77.0-|
+                |      |      |      |             +------Ictalurus 
+                |      +100.0-|      |
+         +-65.0-|             |      +--------------------X laevis
+         |      |             |
+         |      |             +---------------------------Chicken
+         |      |
+         |      |                                  +------Sus scrofa
+         |      +-----------------------------88.0-|
+         |                                         +------O aries
+  +------|
+  |      |                                         +------Homo sapie
+  |      |                                  +100.0-|
+  |      +----------------------------100.0-|      +------Green Monk
+  |      |                                  |
+  |      |                                  +-------------Tupaia bel
+  |      |
+  |      |                                         +------Mus muscul
+  |      +-----------------------------------100.0-|
+  |                                                +------Rat
+  |
+  +-------------------------------------------------------O cuniculu
+
+
+  remember: this is an unrooted tree!
+
