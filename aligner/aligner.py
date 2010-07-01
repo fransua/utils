@@ -55,12 +55,19 @@ def main():
         if proc.communicate()[1] is not None:
             print >> stderr, proc.communicate()[0]
             exit('\nERROR: runninge muscle')
-        
+       
         log += '   Muscle command line: \n' + \
                ' '.join([opts.muscle_bin, '-quiet', '-noanchors', '-maxiters' , \
                          '999', '-maxhours', '24 ', '-maxtrees', '100', '-in', \
                          prot_path, '-out', aali_path, '-scorefile', \
                          score_path][:None if opts.score else -2]) + '\n\n'
+
+    else:
+        proc = Popen(['cp', prot_path, aali_path], stdout=PIPE)
+        if proc.communicate()[1] is not None:
+            print >> stderr, proc.communicate()[0]
+            exit('\nERROR: when skipping muscle.')
+
 
     ###########
     # TRIM SEQS
@@ -105,7 +112,7 @@ def main():
 
     ###########
     # CODON MAP
-    seqs = map2codons(seqs)
+    seqs = map2codons(seqs, opts.input_ali)
 
     ###########
     # TRIM COLS
@@ -212,11 +219,14 @@ def get_alignment(seqs, typ='codons'):
     align = zip( *seqlist)
     return align
 
-def map2codons(seqs):
+def map2codons(seqs, input_ali):
     '''
     map amino-acid alignment to nt
     '''
     for s in seqs:
+        if input_ali:
+            seqs[s]['codons'] = seqs[s]['seq']
+            continue
         codons     = divide(seqs[s]['seq'], rm_cod=False)
         ali_codons = ''
         for aa in seqs[s]['ali']:
@@ -349,7 +359,7 @@ def translate(sequence, stop=False):
             proteinseq += aa
     #return protein sequence
     if stop:
-        if proteinseq.endswith('0'):
+        if proteinseq.endswith('*'):
             return proteinseq[:-1]
         else:
             return proteinseq
