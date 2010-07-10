@@ -18,10 +18,10 @@ def main():
     opts = get_options()
 
     log = '\n\n'
-
+    gencode = _set_code(opts.code)
     seqs     = {}
     for seq in read_fasta(opts.fastafile):
-        seq['trseq'] = translate(seq['seq'], stop=opts.remove_stop)
+        seq['trseq'] = translate(seq['seq'], gencode, stop=opts.remove_stop)
         seqs[seq['name']] = seq
 
     log += '   ' + str (len (seqs)) + ' sequences\n\n'
@@ -312,32 +312,243 @@ def divide(seq, size=3, rm_cod = True):
             codons.append(seq[i:i+size])
     return codons
 
-def translate(sequence, stop=False):
+def _set_code(code):
+    '''
+    gencode, choose between:
+        * [std] Standard
+        * [vmt] Vertebrate Mitochondrial
+        * [ymt] Yeast Mitochondrial
+        * [mmt] Mold Mitochondrial, Protozoan Mitochondrial, Coelenterate Mitochondrial, Mycoplasma and Spiroplasma
+        * [imt] Invertebrate Mitochondrial
+        * [cnc] Ciliate Nuclear, Dasycladacean Nuclear, Hexamita Nuclear
+        * [emi] Echinoderm Mitochondrial and Flatworm Mitochondrial
+        * [enu] Euplotid Nuclear
+        * [bpp] Bacterial and Plant Plastid
+        * [ayn] Alternative Yeast Nuclear
+        * [ami] Ascidian Mitochondrial
+        * [afm] Alternative Flatworm Mitochondrial
+        * [bma] Blepharisma Macronuclear
+        * [cmi] Chlorophycean Mitochondrial
+        * [tmi] Trematode Mitochondrial
+        * [som] Scenedesmus obliquus Mitochondrial
+        * [thm] Thraustochytrium Mitochondrial
+    '''
+    gencode = {
+        'std' :{
+            'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M', 'ACA':'T', 'ACC':'T',
+            'ACG':'T', 'ACT':'T', 'AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K',
+            'AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R', 'CTA':'L', 'CTC':'L',
+            'CTG':'L', 'CTT':'L', 'CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P',
+            'CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q', 'CGA':'R', 'CGC':'R',
+            'CGG':'R', 'CGT':'R', 'GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V',
+            'GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A', 'GAC':'D', 'GAT':'D',
+            'GAA':'E', 'GAG':'E', 'GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G',
+            'TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S', 'TTC':'F', 'TTT':'F',
+            'TTA':'L', 'TTG':'L', 'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
+            'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W', '---':'-'},
+        'vmt' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'M', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'GTT':'V', 'GTC':'V', 'GTA':'V', 'GTG':'V',
+            'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A', 'GAT':'D', 'GAC':'D',
+            'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G', 'GGA':'G', 'GGG':'G',
+            'TAA':'*', 'TAG':'*', 'AGA':'*', 'AGG':'*', '---':'-'},
+        'ymt' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'T', 'CTC':'T', 'CTA':'T', 'CTG':'T',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'M', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'mmt' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'imt' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'M', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'S', 'AGG':'S', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'cnc' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TAA':'Q', 'TAG':'Q',
+            'TGT':'C', 'TGC':'C', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L',
+            'CTG':'L', 'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H',
+            'CAC':'H', 'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R',
+            'CGG':'R', 'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T',
+            'ACC':'T', 'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K',
+            'AAG':'K', 'AGT':'S', 'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V',
+            'GTC':'V', 'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A',
+            'GCG':'A', 'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G',
+            'GGC':'G', 'GGA':'G', 'GGG':'G', 'TGA':'*', '---':'-'},
+        'emi' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'N', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'S', 'AGG':'S', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'enu' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'C', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'bpp' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L', 'CCT':'P',
+            'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H', 'CAA':'Q',
+            'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R', 'ATT':'I',
+            'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T', 'ACA':'T',
+            'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K', 'AGT':'S',
+            'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V', 'GTA':'V',
+            'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A', 'GAT':'D',
+            'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G', 'GGA':'G',
+            'GGG':'G', 'TAA':'*', 'TAG':'*', 'TGA':'*', '---':'-'},
+        'ayn' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'S', 'CCT':'P',
+            'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H', 'CAA':'Q',
+            'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R', 'ATT':'I',
+            'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T', 'ACA':'T',
+            'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K', 'AGT':'S',
+            'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V', 'GTA':'V',
+            'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A', 'GAT':'D',
+            'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G', 'GGA':'G',
+            'GGG':'G', 'TAA':'*', 'TAG':'*', 'TGA':'*', '---':'-'},
+        'ami' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'M', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'G', 'AGG':'G', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'afm' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TAA':'Y', 'TGT':'C',
+            'TGC':'C', 'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L',
+            'CTG':'L', 'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H',
+            'CAC':'H', 'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R',
+            'CGG':'R', 'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T',
+            'ACC':'T', 'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'N',
+            'AAG':'K', 'AGT':'S', 'AGC':'S', 'AGA':'S', 'AGG':'S', 'GTT':'V',
+            'GTC':'V', 'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A',
+            'GCG':'A', 'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G',
+            'GGC':'G', 'GGA':'G', 'GGG':'G', 'TAG':'*', '---':'-'},
+        'bma' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TAG':'Q', 'TGT':'C',
+            'TGC':'C', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'cmi' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TAG':'L', 'TGT':'C',
+            'TGC':'C', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'tmi' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCA':'S', 'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C',
+            'TGA':'W', 'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L',
+            'CCT':'P', 'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H',
+            'CAA':'Q', 'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R',
+            'ATT':'I', 'ATC':'I', 'ATA':'M', 'ATG':'M', 'ACT':'T', 'ACC':'T',
+            'ACA':'T', 'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'N', 'AAG':'K',
+            'AGT':'S', 'AGC':'S', 'AGA':'S', 'AGG':'S', 'GTT':'V', 'GTC':'V',
+            'GTA':'V', 'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A',
+            'GAT':'D', 'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G',
+            'GGA':'G', 'GGG':'G', 'TAA':'*', 'TAG':'*', '---':'-'},
+        'som' :{
+            'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L', 'TCT':'S', 'TCC':'S',
+            'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TAG':'L', 'TGT':'C', 'TGC':'C',
+            'TGG':'W', 'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L', 'CCT':'P',
+            'CCC':'P', 'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H', 'CAA':'Q',
+            'CAG':'Q', 'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R', 'ATT':'I',
+            'ATC':'I', 'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T', 'ACA':'T',
+            'ACG':'T', 'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K', 'AGT':'S',
+            'AGC':'S', 'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V', 'GTA':'V',
+            'GTG':'V', 'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A', 'GAT':'D',
+            'GAC':'D', 'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G', 'GGA':'G',
+            'GGG':'G', 'TCA':'*', 'TAA':'*', 'TGA':'*', '---':'-'},
+        'thm' :{
+            'TTT':'F', 'TTC':'F', 'TTG':'L', 'TCT':'S', 'TCC':'S', 'TCA':'S',
+            'TCG':'S', 'TAT':'Y', 'TAC':'Y', 'TGT':'C', 'TGC':'C', 'TGG':'W',
+            'CTT':'L', 'CTC':'L', 'CTA':'L', 'CTG':'L', 'CCT':'P', 'CCC':'P',
+            'CCA':'P', 'CCG':'P', 'CAT':'H', 'CAC':'H', 'CAA':'Q', 'CAG':'Q',
+            'CGT':'R', 'CGC':'R', 'CGA':'R', 'CGG':'R', 'ATT':'I', 'ATC':'I',
+            'ATA':'I', 'ATG':'M', 'ACT':'T', 'ACC':'T', 'ACA':'T', 'ACG':'T',
+            'AAT':'N', 'AAC':'N', 'AAA':'K', 'AAG':'K', 'AGT':'S', 'AGC':'S',
+            'AGA':'R', 'AGG':'R', 'GTT':'V', 'GTC':'V', 'GTA':'V', 'GTG':'V',
+            'GCT':'A', 'GCC':'A', 'GCA':'A', 'GCG':'A', 'GAT':'D', 'GAC':'D',
+            'GAA':'E', 'GAG':'E', 'GGT':'G', 'GGC':'G', 'GGA':'G', 'GGG':'G',
+            'TTA':'*', 'TAA':'*', 'TAG':'*', 'TGA':'*', '---':'-'},
+    }
+    return gencode [code]
+    
+
+def translate(sequence, gencode, stop=False):
     '''
     little function to translate DNA to protein...
-    from: http://python.genedrift.org/
+    from: http://python.genedrift.org/ completed by biopython
     TODO: do not look at it too much :S
     '''
     #dictionary with the genetic code
-    gencode = {
-    'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M',
-    'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T',
-    'AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K',
-    'AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R',
-    'CTA':'L', 'CTC':'L', 'CTG':'L', 'CTT':'L', 
-    'CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P',
-    'CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q',
-    'CGA':'R', 'CGC':'R', 'CGG':'R', 'CGT':'R',
-    'GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V',
-    'GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A',
-    'GAC':'D', 'GAT':'D', 'GAA':'E', 'GAG':'E',
-    'GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G',
-    'TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S',
-    'TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L',
-    'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
-    'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W',
-    '---':'-'
-    }
     ambig = {'Y':['A', 'G'], 'R':['C', 'T'], 'M':['G', 'T'], 'K':['A', 'C'], \
              'S':['G', 'C'],'W':['A', 'T'], 'V':['C', 'G', 'T'], \
              'H':['A', 'G', 'T'], 'D':['A', 'C', 'T'], 'B':['A', 'C', 'G'], \
@@ -425,6 +636,10 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       help=\
                       '''[%default] save a map of alignement not human
                       friendly by default, see "--humanmap" option''')
+    parser.add_option('--humanmap', action='store_false', \
+                      dest='pymap', default=True, \
+                      help=\
+                      '[False] print human readable map. Only with -M option.')
     parser.add_option('--maskcol', metavar='OPTION', dest='trimcol', \
                       default='None', \
                       choices = ['None', 'automated1', 'softmasking', \
@@ -432,14 +647,8 @@ Reads sequeneces from file fasta format, and align acording to translation.
                                  'specific'], \
                       help=\
                       '''[%default] mask (with "N") bad columns (uses
-                      trimAl). Masking options are:
-                         -> None                              
-                         -> automated1                                
-                         -> softmasking                               
-                         -> gapyout                                     
-                         -> strict                                    
-                         -> strictplus                             
-                         -> specific                                  
+                      trimAl). Masking options are: None, automated1,
+                      softmasking, gapyout, strict, strictplus or specific.
                       ''')
     parser.add_option('--gt', dest='gaptreshold', action="store", \
                       metavar="FLOAT", default=0, type='float', \
@@ -486,10 +695,35 @@ Reads sequeneces from file fasta format, and align acording to translation.
                       dest='print_log', default=False, \
                       help=\
                       '[%default] Print aligner Log.')
-    parser.add_option('--humanmap', action='store_false', \
-                      dest='pymap', default=True, \
+    parser.add_option('--gencode', metavar='OPTION', dest='code', \
+                      default='std', \
+                      choices = ['std', 'vmt', 'ymt', 'mmt', 'imt', 'cnc',\
+                                 'emi', 'enu', 'bpp', 'ayn', 'ami', 'afm',\
+                                 'bma', 'cmi', 'tmi', 'som', 'thm'], \
                       help=\
-                      '[False] print human readable map.')
+                      '''[%default] Choose genetic code between:
+                        std -> Standard                           
+                        cnc -> Ciliate Nuclear, Dasycladacean Nuclear,
+                        ---    Hexamita Nuclear                           
+                        bpp -> Bacterial and Plant Plastid                           
+                        ayn -> Alternative Yeast Nuclear                           
+                        vmt -> Vertebrate Mitochondrial                           
+                        ymt -> Yeast Mitochondrial                           
+                        mmt -> Mold Mitochondrial, Protozoan  
+                        ---    Mitochondrial, Coelenterate Mitochondrial,
+                        ---    Mycoplasma and Spiroplasma                           
+                        imt -> Invertebrate Mitochondrial                           
+                        emi -> Echinoderm Mitochondrial and Flatworm
+                        ---    Mitochondrial                           
+                        enu -> Euplotid Nuclear                           
+                        ami -> Ascidian Mitochondrial                           
+                        afm -> Alternative Flatworm Mitochondrial                           
+                        bma -> Blepharisma Macronuclear                           
+                        cmi -> Chlorophycean Mitochondrial                           
+                        tmi -> Trematode Mitochondrial                           
+                        som -> Scenedesmus obliquus Mitochondrial                           
+                        thm -> Thraustochytrium Mitochondrial                           
+                      ''')
     opts = parser.parse_args()[0]
     if not opts.outfile or not opts.fastafile:
         exit(parser.print_help())
