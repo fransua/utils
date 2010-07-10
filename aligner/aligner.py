@@ -190,22 +190,36 @@ def _printmap(seqs, map_path, pymap=True):
     if not pymap:
         out.write('Aligned Sequences map:\n'+\
                   '\t\t(position in sequence/position in alignment)\n\n')
+
+    cols = zip (*map(lambda x: divide(seqs[x]['codons'], rm_cod=False), seqs))
+    nogapcount = []
+    for i in cols:
+        if '---' not in i:
+            nogapcount.append (max (nogapcount)+1)
+        else:
+            nogapcount.append (0)
+    nogapcount = map (lambda x: str(x-1), nogapcount)
+    nogapcount = map (lambda x: ('-1' != x)*x+('-1'==x)*'*', nogapcount)
+    if pymap:
+        out.write ('no gap\t' + ' '.join (nogapcount) + '\n')
     for s in seqs.keys():
         codons = divide(seqs[s]['codons'], rm_cod=False)
         seqcount = map(lambda x: \
                        str (len (codons[:x])-codons[:x].count('---')) \
-                       *(codons[x] != '---'), range(len(codons)))
+                       *(codons[x] != '---')+'*'*(codons[x] == '---'), \
+                       range(len(codons)))
         if pymap:
             out.write(seqs[s]['name']+'\t'+' '.join(seqcount)+'\n')
             continue
-        gapmap = zip (seqcount, map(str, range(len (codons))))
+        gapmap = zip (nogapcount, seqcount, map(str, range(len (codons))))
         prestring  =  map('/'.join, gapmap)
-        poststring = map(lambda x: ('%20s' % (prestring[x])*(x%5==0)), \
+        poststring = map(lambda x: ('%-20s' % (prestring[x])*(x%5==0)), \
                          range (len (prestring)))
-        out.write(' '*3 + ''.join(poststring)+'\n')
+        out.write('%-20s' % (seqs[s]['name'])+'\n')
+        out.write(' '*21 + ''.join(poststring)+'\n')
         out.write('  ' + ''.join(map(lambda x: ('%20s' % ('|')*(x%5==0)), \
                                       range (len (prestring))))+'\n')
-        out.write('%-20s' % (seqs[s]['name'])+' '.join(codons)+'\n\n')
+        out.write(' '*20+' '.join(codons)+'\n')
     out.close()
 
 
