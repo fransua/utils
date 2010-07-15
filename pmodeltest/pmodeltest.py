@@ -8,9 +8,9 @@ from optparse import OptionParser
 from subprocess import Popen, PIPE
 from re import match
 from numpy import exp
-from consensus import consensus
+#from consensus import consensus
 
-__version__ = "0.0"
+__version__ = "0.2"
 __title__   = "pmodeltest v%s" % __version__
 
 models = [ ['-m', '000000'],
@@ -70,19 +70,27 @@ def main():
     results = {}
     for model in models:
         for freq in freqs.keys():
+            if modelnames[model[1]+freq][0] not in opts.models.split(','):
+                continue
             for inv in invts.keys():
                 for gam in gamma.keys():
                     model_name  = modelnames[model[1] + freq][0]
                     model_param = modelnames[model[1] + freq][1]
-                    print 'Model ' + \
-                          model_name + inv + gam
-                    print 'Command line = ' +opts.algt+\
-                         ' '.join(model + freqs[freq] + invts[inv] +gamma[gam])
+                    if opts.speedy:
+                        opt = 'lr'
+                    else:
+                        opt = 'tlr'
+                    log = 'Model ' + \
+                          model_name + inv + gam + '\n'
+                    log += 'Command line = ' +opts.algt+ ' ' +\
+                           ' '.join(model + freqs[freq] + invts[inv] +gamma[gam]) \
+                           + ' -t ' + opt + '\n'
                     (out, err) = Popen(['bin/phyml', '--sequential', 
                                         '-i', opts.algt,
                                         '-d', 'nt',
                                         '-n', '1',
-                                        '-b', '0'] + \
+                                        '-b', '0',
+                                        '-o', opt] + \
                                        model + freqs[freq] + \
                                        invts[inv] + gamma[gam],
                                        stdout=PIPE).communicate()
@@ -91,9 +99,9 @@ def main():
                     numparam = model_param + \
                                (inv != '') + (gam != '') + numspe*2-3 + 1
                     aic = 2*numparam-2*lnl
-                    print 'K = '+str (numparam)+', lnL = '+str(lnl) + \
-                          '\nAIC = ' + str (aic)
-                    print '-----------------------------------'
+                    log += 'K = '+str (numparam)+', lnL = '+str(lnl) + \
+                           '\nAIC = ' + str (aic) + '\n'
+                    log += '-----------------------------------\n'
                     if err is not None:
                         exit ('problem running phyml: '+out)
                     results[model_name + inv + gam] =  { 'AIC' : aic,
@@ -102,6 +110,9 @@ def main():
                                                          'tree': tree,
                                                          'dic' : dic}
 
+                    if opts.verb:
+                        print log
+                        
     # lala
     ord_aic = sorted (map (lambda x: [results[x]['AIC'], x], results.keys()))
     ord_aic = map (lambda x: x[1], ord_aic)
@@ -118,36 +129,48 @@ def main():
     for model in ord_aic:
         results[model]['weight'] = results[model]['weight']/sumweight
         cumweight += results[model]['weight']
-        results[model]['cumweight'] = results[model]['weight'] + cumweight
+        results[model]['cumweight'] = cumweight
         if results[model]['cumweight'] < 0.9999:
             good_models.append([model, int(1000*results[model]['weight']+0.5)])
 
-    print '\n'.join (map (lambda x: '%-12s'%(x) + \
-                          '%-10s' % (str (results[x]['AIC'])       ) + '\t' +\
-                          '%-9s' % (str (results[x]['deltar'])    ) + '\t' +\
-                          '%-17s' % (str (results[x]['weight'])    ) + '\t' +\
+    print '\n\n**************************************\nTABLE OF WEIGHTS'
+    if opts.speedy:
+        print '(no topology optimization, you should run first(s) model(s) with topology optimization)\n'
+    else:
+        print ''
+    print '   MODEL    |   AIC    |    delta AIC    |         Weight        |   Cumulative weight'
+    print '----------------------------------------------------------------------------------------'
+    print '\n'.join (map (lambda x: '%-12s|'%(x) + \
+                          '%-10s|' % (str (results[x]['AIC'])       ) + '\t' +\
+                          '%-9s|' % (str (results[x]['deltar'])    ) + '\t' +\
+                          '%-17s|' % (str (results[x]['weight'])    ) + '\t' +\
                           '%-17s' % (str (results[x]['cumweight']) ) \
                           , ord_aic))
+    print '\n'
 
 
-    print '\n\n Models keeped to build consensus: \n' + \
-          ', '.join (map(lambda x: x[0], good_models))
+    #if opts.medium:
+    #    for model in 
+    #    filter (results[x][])
 
-    trees = []
-    tree_file = open(opts.algt + '_intree', 'w')
-    for model, weight in good_models:
-        for i in range (weight):
-            tree_file.write(results[model]['tree'])
-            trees.append(results[model]['tree'])
-    tree_file.close()
-
-
-    #Popen(['yes | bin/consense'], stdout=PIPE)
-
-    #final_tree   = get_tree(path + 'outtree')
-    better_model = ord_aic[0]
-
-    print consensus(tress)
+     #print '\n\n Models keeped to build consensus: \n' + \
+     #      ', '.join (map(lambda x: x[0], good_models))
+     #
+     #trees = []
+     #tree_file = open(opts.algt + '_intree', 'w')
+     #for model, weight in good_models:
+     #    for i in range (weight):
+     #        tree_file.write(results[model]['tree'])
+     #        trees.append(results[model]['tree'])
+     #tree_file.close()
+     #
+     #
+     ##Popen(['yes | bin/consense'], stdout=PIPE)
+     #
+     ##final_tree   = get_tree(path + 'outtree')
+     #better_model = ord_aic[0]
+     #
+     #print consensus(trees)
 
     # FINI!!!! YUJUUUUUUUUUUUUUUUUU
 
@@ -205,10 +228,19 @@ def get_options():
         version=__title__,
         usage="%prog [options] file [options [file ...]]",
         description="""\
-Reads sequeneces from file fasta format, and align acording to translation.
+Reads sequeneces from file fasta format, and align acording to translation.                                      
+.                                                                           .
+********************************************                                      
+TODO:                                                                                     
+      - fix averaging topology                                                   
+      - averaging specific parameters                                          
+      - support for proteins
+      - fix medium fast option
+********************************************                                            
 """
         )
-    models = '"HKY85,JC69,K80,F81,F84,TN93,GTR"'
+
+    models='"JC,K80,TrNef,TPM1,TPM2,TPM3,TIM1ef,TIM2ef,TIM3ef,TVMef,SYM,F81,HKY,TrN,TPM1uf,TPM2uf,TPM3uf,TIM1,TIM2,TIM3,TVM,GTR"'
     parser.add_option('-i', dest='algt', metavar="PATH", \
                       help='path to input file in fasta format')
     parser.add_option('-o', dest='outfile', metavar="PATH", \
@@ -216,10 +248,23 @@ Reads sequeneces from file fasta format, and align acording to translation.
     parser.add_option('-t', '--trimseqs', action='store_true', \
                       dest='trimseq', default=False, \
                       help='[%default] remove bad sequences (uses trimAl).')
+    parser.add_option('--fast', action='store_true', \
+                      dest='speedy', default=False, \
+                      help='[%default] Do not do topology optimization.')
+    parser.add_option('--bitfast', action='store_true', \
+                      dest='medium', default=False, \
+                      help=
+                      '''[%default] Same as fast, but reruns models with topology
+                      optimization for best models (the ones with cumulative weight => 0.95)''')
+    parser.add_option('--verbose', action='store_true', \
+                      dest='verb', default=False, \
+                      help='[%default] Displays information about PhyML command line.')
     parser.add_option('-m', metavar='LIST', \
                       dest='models', default=models, \
                       help=\
-                      '[%default] DNA models.')
+                      '''[%default] DNA models.                            
+                      e.g.: -m "JC,GTR"
+                      ''')
     opts = parser.parse_args()[0]
     if not opts.algt:
         exit(parser.print_help())

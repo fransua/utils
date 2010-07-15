@@ -1,0 +1,72 @@
+
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                                    ---  PhyML v3.0_360-500M  ---                                             
+                            http://www.atgc-montpellier.fr/phyml                                          
+                         Copyright CNRS - Universite Montpellier II                                 
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+. Sequence filename: 			protamine.phy
+
+. Data set: 				#1
+
+. Tree topology: 			fixed
+
+. Initial tree: 			BioNJ
+
+. Model of nucleotides substitution: 	custom
+
+. Number of taxa: 			17
+
+. Log-likelihood: 			-1851.43357
+
+. Unconstrained likelihood: 		-1855.95258
+
+. Parsimony: 				325
+
+. Tree size: 				2.06402
+
+. Discrete gamma model: 		Yes
+  - Number of categories: 		4
+  - Gamma shape parameter: 		4.265
+
+. Proportion of invariant: 		0.000
+
+. Nucleotides frequencies:
+
+  - f(A)= 0.25000
+  - f(C)= 0.25000
+  - f(G)= 0.25000
+  - f(T)= 0.25000
+
+. GTR relative rate parameters : 
+
+  A <-> C    1.00000
+  A <-> G    1.00000
+  A <-> T    1.00000
+  C <-> G    1.00000
+  C <-> T    1.00000
+  G <-> T    1.00000
+
+
+. Instantaneous rate matrix : 
+
+  [A---------C---------G---------T------]
+  -1.00000   0.33333   0.33333   0.33333  
+   0.33333  -1.00000   0.33333   0.33333  
+   0.33333   0.33333  -1.00000   0.33333  
+   0.33333   0.33333   0.33333  -1.00000  
+
+
+
+. Time used 0h0m2s
+
+
+. 2 seconds
+
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+ Suggested citation:
+ S. Guindon & O. Gascuel
+ "A simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood"
+ Systematic Biology. 2003. 52(5):696-704.
+ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
