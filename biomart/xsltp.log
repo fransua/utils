@@ -1,0 +1,10 @@
+ERROR:
+XML error in file "conf/Cached/../mart_0_5_0_6.xsl": Couldn't open conf/Cached/../mart_0_5_0_6.xsl:
+No such file or directory at /home/francisco/tools/Perl/biomart-perl/lib//BioMart/Web/CGIXSLT.pm line 221
+ 
+DATE: Tue Jul  6 10:28:28 2010
+REMOTE_ADDR: 
+PARAMETERS PASSED:
+source="temp.xml"
+style="conf/Cached/../mart_0_5_0_6.xsl"
+****************************

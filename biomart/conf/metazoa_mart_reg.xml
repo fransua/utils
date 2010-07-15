@@ -1,0 +1,8 @@
+<MartRegistry>
+  <MartURLLocation database="metazoa_mart_5" default="1"
+  displayName="ENSEMBL METAZOA 5 GENES" host="www.biomart.org" includeDatasets="" martUser="" name="metazoa_mart_5" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="1" />
+  <MartURLLocation database="metazoa_genomic_features_mart_5"
+  default="0" displayName="ENSEMBL METAZOA 5 GENOMIC FEATURES (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="metazoa_genomic_features_mart_5" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="0" />
+  <MartURLLocation database="metazoa_sequence_mart_5" default="0"
+  displayName="ENSEMBL METAZOA 5 SEQUENCE (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="metazoa_sequence_mart_5" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="0" />
+</MartRegistry>

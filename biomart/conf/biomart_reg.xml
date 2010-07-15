@@ -1,0 +1,9 @@
+<MartRegistry>
+  <MartURLLocation database="ensembl_mart_58" default="1" displayName="ENSEMBL 58 GENES (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="ensembl" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="1" />
+  <MartURLLocation database="snp_mart_58" default="0" displayName="ENSEMBL 58 VARIATION  (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="snp" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="1" />
+  <MartURLLocation database="functional_genomics_mart_58" default="0" displayName="ENSEMBL 58 FUNCTIONAL GENOMICS (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="functional_genomics" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="1" />
+  <MartURLLocation database="vega_mart_58" default="0" displayName="VEGA 36  (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="vega" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="1" />
+  <MartURLLocation database="genomic_features_mart_58" default="0" displayName="ENSEMBL 58 GENOMIC FEATURES (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="genomic_features" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="0" />
+  <MartURLLocation database="ontology_mart_58" default="0" displayName="ENSEMBL 58 ONTOLOGY (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="ontology" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="0" />
+  <MartURLLocation database="sequence_mart_58" default="0" displayName="ENSEMBL 58 SEQUENCE (SANGER UK)" host="www.biomart.org" includeDatasets="" martUser="" name="sequence" path="/biomart/martservice" port="80" serverVirtualSchema="default" visible="0" />
+</MartRegistry>
