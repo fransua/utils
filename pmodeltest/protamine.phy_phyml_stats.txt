@@ -10,7 +10,7 @@
 
 . Data set: 				#1
 
-. Tree topology: 			fixed
+. Tree topology search : 		NNIs
 
 . Initial tree: 			BioNJ
 
@@ -18,17 +18,17 @@
 
 . Number of taxa: 			17
 
-. Log-likelihood: 			-1851.43357
+. Log-likelihood: 			-1806.85331
 
 . Unconstrained likelihood: 		-1855.95258
 
-. Parsimony: 				325
+. Parsimony: 				328
 
-. Tree size: 				2.06402
+. Tree size: 				2.07543
 
 . Discrete gamma model: 		Yes
   - Number of categories: 		4
-  - Gamma shape parameter: 		4.265
+  - Gamma shape parameter: 		4.007
 
 . Proportion of invariant: 		0.000
 
@@ -41,28 +41,28 @@
 
 . GTR relative rate parameters : 
 
-  A <-> C    1.00000
-  A <-> G    1.00000
-  A <-> T    1.00000
-  C <-> G    1.00000
-  C <-> T    1.00000
+  A <-> C    4.12754
+  A <-> G    5.59687
+  A <-> T    1.31233
+  C <-> G    1.39364
+  C <-> T    3.96490
   G <-> T    1.00000
 
 
 . Instantaneous rate matrix : 
 
   [A---------C---------G---------T------]
-  -1.00000   0.33333   0.33333   0.33333  
-   0.33333  -1.00000   0.33333   0.33333  
-   0.33333   0.33333  -1.00000   0.33333  
-   0.33333   0.33333   0.33333  -1.00000  
+  -1.26894   0.47456   0.64349   0.15088  
+   0.47456  -1.09065   0.16023   0.45586  
+   0.64349   0.16023  -0.91870   0.11497  
+   0.15088   0.45586   0.11497  -0.72172  
 
 
 
-. Time used 0h0m2s
+. Time used 0h0m7s
 
 
-. 2 seconds
+. 7 seconds
 
  oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
  Suggested citation:

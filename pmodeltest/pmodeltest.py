@@ -6,7 +6,7 @@
 
 from optparse import OptionParser
 from subprocess import Popen, PIPE
-from re import match
+from re import match, sub
 from numpy import exp
 #from consensus import consensus
 
@@ -58,35 +58,31 @@ modelnames = { '000000' + 'ef': ['JC'     , 0],
                '012345' + 'uf': ['GTR'    , 8]
                }
 
-def main():
-    '''
-    main function when called by command line.
-    infile must be in phylip format.
-    '''
-    opts = get_options()
 
-    #ali_apth = opts.algt
-
+def run_phyml(algt, wanted_models, speed, verb):
+    '''
+    runs a list of models and returns a dictionnary of results
+    '''
+    if speed:
+        opt = 'lr'
+    else:
+        opt = 'tlr'
     results = {}
     for model in models:
         for freq in freqs.keys():
-            if modelnames[model[1]+freq][0] not in opts.models.split(','):
+            if modelnames[model[1]+freq][0] not in wanted_models.split(','):
                 continue
             for inv in invts.keys():
                 for gam in gamma.keys():
                     model_name  = modelnames[model[1] + freq][0]
                     model_param = modelnames[model[1] + freq][1]
-                    if opts.speedy:
-                        opt = 'lr'
-                    else:
-                        opt = 'tlr'
-                    log = 'Model ' + \
+                    log = '\nModel ' + \
                           model_name + inv + gam + '\n'
-                    log += 'Command line = ' +opts.algt+ ' ' +\
+                    log += 'Command line = ' +algt+ ' ' +\
                            ' '.join(model + freqs[freq] + invts[inv] +gamma[gam]) \
                            + ' -t ' + opt + '\n'
                     (out, err) = Popen(['bin/phyml', '--sequential', 
-                                        '-i', opts.algt,
+                                        '-i', algt,
                                         '-d', 'nt',
                                         '-n', '1',
                                         '-b', '0',
@@ -94,8 +90,8 @@ def main():
                                        model + freqs[freq] + \
                                        invts[inv] + gamma[gam],
                                        stdout=PIPE).communicate()
-                    (numspe, lnl, dic) = parse_stats(opts.algt + '_phyml_stats.txt')
-                    tree          = get_tree   (opts.algt + '_phyml_tree.txt') 
+                    (numspe, lnl, dic) = parse_stats(algt + '_phyml_stats.txt')
+                    tree          = get_tree   (algt + '_phyml_tree.txt') 
                     numparam = model_param + \
                                (inv != '') + (gam != '') + numspe*2-3 + 1
                     aic = 2*numparam-2*lnl
@@ -109,11 +105,16 @@ def main():
                                                          'K'   : numparam,
                                                          'tree': tree,
                                                          'dic' : dic}
-
-                    if opts.verb:
+                    if verb:
                         print log
-                        
-    # lala
+
+    return results
+
+
+def aic_calc(results, speed):
+    '''
+    compute and displays AICs etc... 
+    '''
     ord_aic = sorted (map (lambda x: [results[x]['AIC'], x], results.keys()))
     ord_aic = map (lambda x: x[1], ord_aic)
     min_aic = results[ord_aic[0]]['AIC']
@@ -134,8 +135,8 @@ def main():
             good_models.append([model, int(1000*results[model]['weight']+0.5)])
 
     print '\n\n**************************************\nTABLE OF WEIGHTS'
-    if opts.speedy:
-        print '(no topology optimization, you should run first(s) model(s) with topology optimization)\n'
+    if speed:
+        print '(WARNING: no topology optimization)\n'
     else:
         print ''
     print '   MODEL    |   AIC    |    delta AIC    |         Weight        |   Cumulative weight'
@@ -147,11 +148,42 @@ def main():
                           '%-17s' % (str (results[x]['cumweight']) ) \
                           , ord_aic))
     print '\n'
+    return results, ord_aic
 
 
-    #if opts.medium:
-    #    for model in 
+def main():
+    '''
+    main function when called by command line.
+    infile must be in phylip format.
+    '''
+    opts = get_options()
+    #ali_apth = opts.algt
+    results = run_phyml(opts.algt, opts.models, opts.speedy, opts.verb)
+    # lala
+    results, ord_aic = aic_calc(results, opts.speedy)
+
+    if opts.medium:
+        wanted_models = []
+        for model in ord_aic:
+            if results[model]['cumweight'] < 0.95:
+                wanted_models.append(model)
+            else:
+                break
+        wanted_models = list (set (map (lambda x: sub('\+.*', '', x), wanted_models)))
+        wanted_models = ','.join(wanted_models)
+        print wanted_models
+        print '\nREFINING...\n    doing the same but computing topologies only fo models ' + \
+              wanted_models + '\n'
+        results = run_phyml(opts.algt, wanted_models, False, opts.verb)
+        results, ord_aic = aic_calc(results, False)
+        
+
+
     #    filter (results[x][])
+    #    results, log = run_phyml(opts.algt, opts.models, opts.speedy)
+    #    if opts.verb:
+    #        print log
+
 
      #print '\n\n Models keeped to build consensus: \n' + \
      #      ', '.join (map(lambda x: x[0], good_models))
@@ -235,7 +267,7 @@ TODO:
       - fix averaging topology                                                   
       - averaging specific parameters                                          
       - support for proteins
-      - fix medium fast option
+      - improve medium fast option (what about I+G?)
 ********************************************                                            
 """
         )
@@ -268,6 +300,8 @@ TODO:
     opts = parser.parse_args()[0]
     if not opts.algt:
         exit(parser.print_help())
+    if opts.medium:
+        opts.speedy = True
     return opts
 
 
