@@ -59,7 +59,7 @@ modelnames = { '000000' + 'ef': ['JC'     , 0],
                }
 
 
-def run_phyml(algt, wanted_models, speed, verb):
+def run_phyml(algt, wanted_models, speed, verb, rerun=False):
     '''
     runs a list of models and returns a dictionnary of results
     '''
@@ -70,10 +70,14 @@ def run_phyml(algt, wanted_models, speed, verb):
     results = {}
     for model in models:
         for freq in freqs.keys():
-            if modelnames[model[1]+freq][0] not in wanted_models.split(','):
+            if not rerun and modelnames[model[1]+freq][0] not in \
+                   sub('\+.*', '', wanted_models).split(','):
                 continue
             for inv in invts.keys():
                 for gam in gamma.keys():
+                    if rerun:
+                        if modelnames[model[1]+freq][0] + inv + gam not in wanted_models.split(','):
+                            continue
                     model_name  = modelnames[model[1] + freq][0]
                     model_param = modelnames[model[1] + freq][1]
                     log = '\nModel ' + \
@@ -168,13 +172,13 @@ def main():
             if results[model]['cumweight'] < 0.95:
                 wanted_models.append(model)
             else:
+                wanted_models.append(model)
                 break
-        wanted_models = list (set (map (lambda x: sub('\+.*', '', x), wanted_models)))
+        #wanted_models = list (set (map (lambda x: sub('\+.*', '', x), wanted_models)))
         wanted_models = ','.join(wanted_models)
-        print wanted_models
         print '\nREFINING...\n    doing the same but computing topologies only fo models ' + \
               wanted_models + '\n'
-        results = run_phyml(opts.algt, wanted_models, False, opts.verb)
+        results = run_phyml(opts.algt, wanted_models, False, opts.verb, rerun=True)
         results, ord_aic = aic_calc(results, False)
         
 
@@ -266,8 +270,8 @@ Reads sequeneces from file fasta format, and align acording to translation.
 TODO:                                                                                     
       - fix averaging topology                                                   
       - averaging specific parameters                                          
-      - support for proteins
-      - improve medium fast option (what about I+G?)
+      - support for proteins                                                       
+      - problem with imput order of models...         
 ********************************************                                            
 """
         )
