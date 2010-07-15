@@ -10,7 +10,7 @@ from re import match, sub
 from numpy import exp
 #from consensus import consensus
 
-__version__ = "0.2"
+__version__ = "0.45"
 __title__   = "pmodeltest v%s" % __version__
 
 models = [ ['-m', '000000'],
