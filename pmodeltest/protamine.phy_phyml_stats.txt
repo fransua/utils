@@ -18,44 +18,44 @@
 
 . Number of taxa: 			17
 
-. Log-likelihood: 			-1806.85331
+. Log-likelihood: 			-1773.71242
 
 . Unconstrained likelihood: 		-1855.95258
 
-. Parsimony: 				328
+. Parsimony: 				327
 
-. Tree size: 				2.07543
+. Tree size: 				2.42702
 
 . Discrete gamma model: 		Yes
   - Number of categories: 		4
-  - Gamma shape parameter: 		4.007
+  - Gamma shape parameter: 		2.413
 
 . Proportion of invariant: 		0.000
 
 . Nucleotides frequencies:
 
-  - f(A)= 0.25000
-  - f(C)= 0.25000
-  - f(G)= 0.25000
-  - f(T)= 0.25000
+  - f(A)= 0.26854
+  - f(C)= 0.26172
+  - f(G)= 0.35830
+  - f(T)= 0.11145
 
 . GTR relative rate parameters : 
 
-  A <-> C    4.12754
-  A <-> G    5.59687
-  A <-> T    1.31233
-  C <-> G    1.39364
-  C <-> T    3.96490
+  A <-> C    2.21555
+  A <-> G    3.13385
+  A <-> T    1.44545
+  C <-> G    0.59363
+  C <-> T    3.13385
   G <-> T    1.00000
 
 
 . Instantaneous rate matrix : 
 
   [A---------C---------G---------T------]
-  -1.26894   0.47456   0.64349   0.15088  
-   0.47456  -1.09065   0.16023   0.45586  
-   0.64349   0.16023  -0.91870   0.11497  
-   0.15088   0.45586   0.11497  -0.72172  
+  -1.35549   0.42171   0.81662   0.11716  
+   0.43269  -0.84139   0.15469   0.25401  
+   0.61204   0.11299  -0.80608   0.08105  
+   0.28229   0.59650   0.26058  -1.13937  
 
 
 
