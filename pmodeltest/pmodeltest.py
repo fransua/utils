@@ -277,7 +277,7 @@ TODO:
                   'TIM2ef', 'TIM3ef', 'TVMef', 'SYM', 'F81', 'HKY', 'TrN', \
                   'TPM1uf', 'TPM2uf', 'TPM3uf', 'TIM1', 'TIM2', 'TIM3', 'TVM', \
                   'GTR']
-    models='"JC,K80,TrNef,TPM1,TPM2,TPM3,TIM1ef,TIM2ef,TIM3ef,TVMef,SYM,F81,HKY,TrN,TPM1uf,TPM2uf,TPM3uf,TIM1,TIM2,TIM3,TVM,GTR"'
+    models='JC,K80,TrNef,TPM1,TPM2,TPM3,TIM1ef,TIM2ef,TIM3ef,TVMef,SYM,F81,HKY,TrN,TPM1uf,TPM2uf,TPM3uf,TIM1,TIM2,TIM3,TVM,GTR'
     parser.add_option('-i', dest='algt', metavar="PATH", \
                       help='path to input file in fasta format')
     parser.add_option('-o', dest='outfile', metavar="PATH", \
@@ -300,7 +300,7 @@ TODO:
                       dest='models', default=models, \
                       help=\
                       '''[%default] DNA models.                            
-                      e.g.: -m "JC,GTR"
+                      e.g.: -m "JC,TrN,GTR"
                       ''')
     opts = parser.parse_args()[0]
     if not opts.algt:
