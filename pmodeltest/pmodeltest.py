@@ -1,18 +1,19 @@
 #!/usr/bin/python
 #        Author: Francois-Jose Serra
 # Creation Date: 2010/05/14 08:58:48
-#
-# This script 
 
 from optparse import OptionParser
 from subprocess import Popen, PIPE
-from re import match
+from re import match, sub
+from sys import stderr as STDERR
 from numpy import exp
 #from consensus import consensus
 
-__version__ = "0.2"
+__version__ = "0.50"
 __title__   = "pmodeltest v%s" % __version__
 
+
+# global variables
 models = [ ['-m', '000000'],
            ['-m', '010010'],
            ['-m', '010020'],
@@ -58,35 +59,36 @@ modelnames = { '000000' + 'ef': ['JC'     , 0],
                '012345' + 'uf': ['GTR'    , 8]
                }
 
-def main():
+def run_phyml(algt, wanted_models, speed, verb, rerun=False):
     '''
-    main function when called by command line.
-    infile must be in phylip format.
+    runs a list of models and returns a dictionnary of results.
+    If rerun is True, will have into account +I+G information
+    and only run the wanted ones.
     '''
-    opts = get_options()
-
-    #ali_apth = opts.algt
-
+    if speed:
+        opt = 'lr'
+    else:
+        opt = 'tlr'
     results = {}
     for model in models:
         for freq in freqs.keys():
-            if modelnames[model[1]+freq][0] not in opts.models.split(','):
+            if not rerun and modelnames[model[1]+freq][0] not in \
+                   sub('\+.*', '', wanted_models).split(','):
                 continue
             for inv in invts.keys():
                 for gam in gamma.keys():
+                    if rerun:
+                        if modelnames[model[1]+freq][0] + inv + gam not in wanted_models.split(','):
+                            continue
                     model_name  = modelnames[model[1] + freq][0]
                     model_param = modelnames[model[1] + freq][1]
-                    if opts.speedy:
-                        opt = 'lr'
-                    else:
-                        opt = 'tlr'
-                    log = 'Model ' + \
+                    log = '\nModel ' + \
                           model_name + inv + gam + '\n'
-                    log += 'Command line = ' +opts.algt+ ' ' +\
+                    log += 'Command line = ' +algt+ ' ' +\
                            ' '.join(model + freqs[freq] + invts[inv] +gamma[gam]) \
                            + ' -t ' + opt + '\n'
                     (out, err) = Popen(['bin/phyml', '--sequential', 
-                                        '-i', opts.algt,
+                                        '-i', algt,
                                         '-d', 'nt',
                                         '-n', '1',
                                         '-b', '0',
@@ -94,8 +96,9 @@ def main():
                                        model + freqs[freq] + \
                                        invts[inv] + gamma[gam],
                                        stdout=PIPE).communicate()
-                    (numspe, lnl, dic) = parse_stats(opts.algt + '_phyml_stats.txt')
-                    tree          = get_tree   (opts.algt + '_phyml_tree.txt') 
+                    (numspe, lnl, dic) = parse_stats(algt + '_phyml_stats.txt')
+                    tree          = get_tree   (algt + '_phyml_tree.txt') 
+                    # number of parameters = X (nb of branches) + 1 (topology) + Y (model)
                     numparam = model_param + \
                                (inv != '') + (gam != '') + numspe*2-3 + 1
                     aic = 2*numparam-2*lnl
@@ -109,11 +112,16 @@ def main():
                                                          'K'   : numparam,
                                                          'tree': tree,
                                                          'dic' : dic}
-
-                    if opts.verb:
+                    if verb:
                         print log
-                        
-    # lala
+
+    return results
+
+
+def aic_calc(results, speed):
+    '''
+    compute and displays AICs etc... 
+    '''
     ord_aic = sorted (map (lambda x: [results[x]['AIC'], x], results.keys()))
     ord_aic = map (lambda x: x[1], ord_aic)
     min_aic = results[ord_aic[0]]['AIC']
@@ -133,48 +141,74 @@ def main():
         if results[model]['cumweight'] < 0.9999:
             good_models.append([model, int(1000*results[model]['weight']+0.5)])
 
-    print '\n\n**************************************\nTABLE OF WEIGHTS'
-    if opts.speedy:
-        print '(no topology optimization, you should run first(s) model(s) with topology optimization)\n'
-    else:
-        print ''
-    print '   MODEL    |   AIC    |    delta AIC    |         Weight        |   Cumulative weight'
-    print '----------------------------------------------------------------------------------------'
-    print '\n'.join (map (lambda x: '%-12s|'%(x) + \
-                          '%-10s|' % (str (results[x]['AIC'])       ) + '\t' +\
-                          '%-9s|' % (str (results[x]['deltar'])    ) + '\t' +\
-                          '%-17s|' % (str (results[x]['weight'])    ) + '\t' +\
-                          '%-17s' % (str (results[x]['cumweight']) ) \
+    print '\n\n*************************************'
+    print     '         TABLE OF WEIGHTS'
+    if speed:
+        print ' (WARNING: no topology optimization)'
+    print     '*************************************\n'
+    print '   MODEL       | AIC         | delta AIC   | Weights           | Cumulative weights'
+    print '   ---------------------------------------------------------------------------------'
+    print '\n'.join (map (lambda x: '   %-12s|'%(x) + \
+                          ' %-11s |' % (str (results[x]['AIC'])       )+\
+                          ' %-11s |' % (str (results[x]['deltar'])    ) +\
+                          ' %-17s |' % (str (results[x]['weight'])    ) +\
+                          ' %-15s' % (str (results[x]['cumweight']) ) \
                           , ord_aic))
     print '\n'
+    return results, ord_aic
 
 
-    #if opts.medium:
-    #    for model in 
+def main():
+    '''
+    main function when called by command line.
+    infile must be in phylip format.
+    '''
+    opts = get_options()
+    results = run_phyml(opts.algt, opts.models, opts.speedy, opts.verb)
+    results, ord_aic = aic_calc(results, opts.speedy)
+
+    if opts.medium:
+        wanted_models = []
+        for model in ord_aic:
+            if results[model]['cumweight'] < 0.95:
+                wanted_models.append(model)
+            else:
+                wanted_models.append(model)
+                break
+        wanted_models = ','.join(wanted_models)
+        print '\nREFINING...\n    doing the same but computing topologies only fo models that sums a weight > 0.95\n' + \
+              wanted_models + '\n'
+        results = run_phyml(opts.algt, wanted_models, False, opts.verb, rerun=True)
+        results, ord_aic = aic_calc(results, False)
+
+    print '\n\n*************************************************'
+    print '  Tree corresponding to best model, '+ ord_aic[0] + '\n'
+    print results[ord_aic[0]]['tree']
+
+
     #    filter (results[x][])
-
-     #print '\n\n Models keeped to build consensus: \n' + \
-     #      ', '.join (map(lambda x: x[0], good_models))
-     #
-     #trees = []
-     #tree_file = open(opts.algt + '_intree', 'w')
-     #for model, weight in good_models:
-     #    for i in range (weight):
-     #        tree_file.write(results[model]['tree'])
-     #        trees.append(results[model]['tree'])
-     #tree_file.close()
-     #
-     #
-     ##Popen(['yes | bin/consense'], stdout=PIPE)
-     #
-     ##final_tree   = get_tree(path + 'outtree')
-     #better_model = ord_aic[0]
-     #
-     #print consensus(trees)
-
+    #    results, log = run_phyml(opts.algt, opts.models, opts.speedy)
+    #    if opts.verb:
+    #        print log
+    #print '\n\n Models keeped to build consensus: \n' + \
+    #      ', '.join (map(lambda x: x[0], good_models))
+    #
+    #trees = []
+    #tree_file = open(opts.algt + '_intree', 'w')
+    #for model, weight in good_models:
+    #    for i in range (weight):
+    #        tree_file.write(results[model]['tree'])
+    #        trees.append(results[model]['tree'])
+    #tree_file.close()
+    #
+    #
+    ##Popen(['yes | bin/consense'], stdout=PIPE)
+    #
+    ##final_tree   = get_tree(path + 'outtree')
+    #better_model = ord_aic[0]
+    #
+    #print consensus(trees)
     # FINI!!!! YUJUUUUUUUUUUUUUUUUU
-
-# number of parameters = X (nb of branches) + 1 (topology) + Y (model)
 
 def parse_stats(path):
     '''
@@ -232,14 +266,17 @@ Reads sequeneces from file fasta format, and align acording to translation.
 .                                                                           .
 ********************************************                                      
 TODO:                                                                                     
-      - fix averaging topology                                                   
-      - averaging specific parameters                                          
-      - support for proteins
-      - fix medium fast option
+      (- fix averaging topology)                                                   
+      (- averaging specific parameters)                                          
+      - support for proteins                                                       
 ********************************************                                            
 """
         )
 
+    model_list = ['JC', 'K80', 'TrNef', 'TPM1', 'TPM2', 'TPM3', 'TIM1ef', \
+                  'TIM2ef', 'TIM3ef', 'TVMef', 'SYM', 'F81', 'HKY', 'TrN', \
+                  'TPM1uf', 'TPM2uf', 'TPM3uf', 'TIM1', 'TIM2', 'TIM3', 'TVM', \
+                  'GTR']
     models='"JC,K80,TrNef,TPM1,TPM2,TPM3,TIM1ef,TIM2ef,TIM3ef,TVMef,SYM,F81,HKY,TrN,TPM1uf,TPM2uf,TPM3uf,TIM1,TIM2,TIM3,TVM,GTR"'
     parser.add_option('-i', dest='algt', metavar="PATH", \
                       help='path to input file in fasta format')
@@ -268,15 +305,15 @@ TODO:
     opts = parser.parse_args()[0]
     if not opts.algt:
         exit(parser.print_help())
+    if opts.medium:
+        opts.speedy = True
+    if len (set (opts.models.split(',')) - set (model_list)) > 0:
+        print >>STDERR, 'ERROR: those models are not in list of ' + \
+              'allowed models: \n   '+ \
+               ', '.join (list (set (opts.models.split(',')) - \
+                                set (model_list))) + '\n\n'
+        exit(parser.print_help())
     return opts
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     exit(main())
