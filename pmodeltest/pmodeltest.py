@@ -4,7 +4,7 @@
 
 from optparse import OptionParser
 from subprocess import Popen, PIPE
-from re import match, sub
+from re import sub
 from sys import stderr as STDERR
 from numpy import exp
 #from consensus import consensus
@@ -78,15 +78,16 @@ def run_phyml(algt, wanted_models, speed, verb, rerun=False):
             for inv in invts.keys():
                 for gam in gamma.keys():
                     if rerun:
-                        if modelnames[model[1]+freq][0] + inv + gam not in wanted_models.split(','):
+                        if modelnames[model[1]+freq][0] + inv + gam \
+                               not in wanted_models.split(','):
                             continue
                     model_name  = modelnames[model[1] + freq][0]
                     model_param = modelnames[model[1] + freq][1]
                     log = '\nModel ' + \
                           model_name + inv + gam + '\n'
                     log += 'Command line = ' +algt+ ' ' +\
-                           ' '.join(model + freqs[freq] + invts[inv] +gamma[gam]) \
-                           + ' -t ' + opt + '\n'
+                           ' '.join(model + freqs[freq] + invts[inv] + \
+                                    gamma[gam]) + ' -t ' + opt + '\n'
                     (out, err) = Popen(['bin/phyml', '--sequential', 
                                         '-i', algt,
                                         '-d', 'nt',
@@ -98,7 +99,7 @@ def run_phyml(algt, wanted_models, speed, verb, rerun=False):
                                        stdout=PIPE).communicate()
                     (numspe, lnl, dic) = parse_stats(algt + '_phyml_stats.txt')
                     tree          = get_tree   (algt + '_phyml_tree.txt') 
-                    # number of parameters = X (nb of branches) + 1 (topology) + Y (model)
+                    # num of param = X (nb of branches) + 1(topology) + Y(model)
                     numparam = model_param + \
                                (inv != '') + (gam != '') + numspe*2-3 + 1
                     aic = 2*numparam-2*lnl
@@ -176,9 +177,11 @@ def main():
                 wanted_models.append(model)
                 break
         wanted_models = ','.join(wanted_models)
-        print '\nREFINING...\n    doing the same but computing topologies only fo models that sums a weight > 0.95\n' + \
+        print '\nREFINING...\n    doing the same but computing topologies' + \
+              ' only fo models that sums a weight > 0.95\n' + \
               wanted_models + '\n'
-        results = run_phyml(opts.algt, wanted_models, False, opts.verb, rerun=True)
+        results = run_phyml(opts.algt, wanted_models, \
+                            False, opts.verb, rerun=True)
         results, ord_aic = aic_calc(results, False)
 
     print '\n\n*************************************************'
@@ -277,7 +280,6 @@ TODO:
                   'TIM2ef', 'TIM3ef', 'TVMef', 'SYM', 'F81', 'HKY', 'TrN', \
                   'TPM1uf', 'TPM2uf', 'TPM3uf', 'TIM1', 'TIM2', 'TIM3', 'TVM', \
                   'GTR']
-    models='JC,K80,TrNef,TPM1,TPM2,TPM3,TIM1ef,TIM2ef,TIM3ef,TVMef,SYM,F81,HKY,TrN,TPM1uf,TPM2uf,TPM3uf,TIM1,TIM2,TIM3,TVM,GTR'
     parser.add_option('-i', dest='algt', metavar="PATH", \
                       help='path to input file in fasta format')
     parser.add_option('-o', dest='outfile', metavar="PATH", \
@@ -290,14 +292,17 @@ TODO:
                       help='[%default] Do not do topology optimization.')
     parser.add_option('--bitfast', action='store_true', \
                       dest='medium', default=False, \
-                      help=
-                      '''[%default] Same as fast, but reruns models with topology
-                      optimization for best models (the ones with cumulative weight => 0.95)''')
+                      help=\
+                      ''' [%default] Same as fast, but reruns models with
+                      topology optimization for best models (the ones with
+                      cumulative weight => 0.95)''')
     parser.add_option('--verbose', action='store_true', \
                       dest='verb', default=False, \
-                      help='[%default] Displays information about PhyML command line.')
+                      help=\
+                      '''[%default] Displays information about PhyML command
+                      line.''')
     parser.add_option('-m', metavar='LIST', \
-                      dest='models', default=models, \
+                      dest='models', default=','.join(model_list), \
                       help=\
                       '''[%default] DNA models.                            
                       e.g.: -m "JC,TrN,GTR"
