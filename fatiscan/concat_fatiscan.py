@@ -20,9 +20,14 @@ def main():
     opts = get_options()
     dico = fatiParser (opts)
     dicoAnnot = getAnnot (opts.annot)
-    if opts.write == 'R':
+    if opts.write == 'R' or opts.write == 'both':
         Writer(dico, opts.out, dicoAnnot, opts.lvl)
-
+    if opts.write == 'py' or opts.write == 'both':
+        from cPickle import dump
+        out = open (_check_out (opts.out + '.dic'), 'w')
+        dump (dico, out)
+        out.close()
+        
 def _print_status(indir, col):
     '''
     if verbose print status of parsing
@@ -32,6 +37,20 @@ def _print_status(indir, col):
     print '\t in: '+indir
     print 'parsing file: ' + col
 
+def _check_out (out):
+    '''
+    check that we are not overwriting
+    '''
+    if os.path.exists(out):
+        todo = ''
+        while todo != 'R' and todo != 'C' and todo != 'Q':
+            todo = raw_input('File %s already exists, [R]eplace it add \
+[C]hange output name to %s_bis ([Q]uit): ' % (out, out))
+        if todo == 'C':
+            out = out + '_bis'
+        elif todo == 'Q':
+            exit()
+    return out
 
 def getAnnot(annot):
     '''
@@ -67,10 +86,8 @@ def Writer(dico, out, dicoAnnot, lvl):
     if len (set (lvl) & set (levels)) != len (lvl):
         exit('ERROR: level %s not available\n' %\
              (str (lvl)))
-    ng = open(out + '_' + str (lvl[0]) + '.ng' ,'w')
-    np = open(out + '_' + str (lvl[0]) + '.np' ,'w')
-    ng = open(out + '_' + str (lvl[0]) + '.ng' ,'w')
-    np = open(out + '_' + str (lvl[0]) + '.np' ,'w')
+    ng = open(_check_out (out + '_' + str (lvl[0]) + '.ng') ,'w')
+    np = open(_check_out (out + '_' + str (lvl[0]) + '.np') ,'w')
     ng.write('name\t'          +\
              sub('\tsave','',\
                  '\t'.join (sorted (dico[dico.keys()[0]].keys()))) \
@@ -205,7 +222,8 @@ def get_options():
         usage="%prog [options] file [options [file ...]]",
         description="""\
         Concatenate outfile from fatiscan either short/long, into big
-python dictionary or 2 tables for R script, or both                                        
+python dictionary or 2 tables for R script, or both
+./concat_fatiscan.py -i /home/francisco/project/functional_anaysis_vs_evolution/v_56/Mammals/2_fatiOut/GO_2-8/ -o ici -a /home/francisco/project/functional_anaysis_vs_evolution/v_56/Mammals/funcDB/biol_proc_detail.txt --format both
 .                                                                           .
 ********************************************                                      
 TODO:                                                                                     
@@ -221,7 +239,7 @@ TODO:
                       help=\
                       '''[%default] outfile format, "R" to generate 2 matrix
                       readable by little R script, "py" to generate python
-                      dictionary.
+                      dictionary, "both".
                       ''')
     parser.add_option('-a', dest='annot', metavar="PATH", \
                       help=\
