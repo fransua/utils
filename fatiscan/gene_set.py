@@ -35,7 +35,9 @@ class Gene_set:
         # sort genes in annot by their values...
         # useful to know which gene in list1 or list2
         self.annot = self._order_genes_in_annot()
-        
+
+        self.gsea_dic = {}
+
     def _parse_infile(self):
         '''
         parse in file in format:
@@ -92,15 +94,14 @@ class Gene_set:
         keys      = []
         total_len = len (self.genes)
         # intialize dict
-        dico      = {}
         for annot in self.annot.keys():
-            dico[annot] = [{}] *partitions
+            self.gsea_dic[annot] = [{} for i in xrange (partitions)]
         # define cutoff value for each partition
-        dico['thresh'] = [bisect_left (self.order, rank * (p + 1)) \
+        self.gsea_dic['thresh'] = [bisect_left (self.order, rank * (p + 1)) \
                          for p in xrange(partitions)]
         # start fishers
         for part in xrange(partitions):
-            genes1 = set (self.genes[:self.order.index (dico['thresh'][part])])
+            genes1 = set (self.genes[:self.order.index (self.gsea_dic['thresh'][part])])
             len_genes1 = len (genes1)
             len_genes2 = total_len - len_genes1
             for annot, annot_genes in self.annot.iteritems():
@@ -108,19 +109,18 @@ class Gene_set:
                 p2 = len (annot_genes) - p1
                 n1 = len_genes1  - p1
                 n2 = len_genes2  - p2
-                pv = pvalue(p1, n1, p2, n2).two_tail
-                dico[annot][part]['p1' ] = p1
-                dico[annot][part]['n1' ] = n1
-                dico[annot][part]['p2' ] = p2
-                dico[annot][part]['n2' ] = n2
-                dico[annot][part]['pv' ] = pv
+                pv = pvalue (p1, n1, p2, n2).two_tail
+                self.gsea_dic[annot][part]['p1'] = p1
+                self.gsea_dic[annot][part]['n1'] = n1
+                self.gsea_dic[annot][part]['p2'] = p2
+                self.gsea_dic[annot][part]['n2'] = n2
+                self.gsea_dic[annot][part]['pv'] = pv
                 pvalues.append(pv)
                 keys.append((annot, part))
         # compute adjustment of pvalues
         adj_pvalues = bh_qvalues(pvalues)
         for annot, part in keys:
-            dico[annot][part]['apv'] = adj_pvalues.pop(0)
-        return dico
+            self.gsea_dic[annot][part]['apv'] = adj_pvalues.pop(0)
 
     def write_gsea (self):
         '''
