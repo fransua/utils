@@ -33,7 +33,6 @@ def main():
     score_path  = opts.outfile + '_score'
     map_path    = opts.outfile + '_map'
     todel       = [prot_path]
-    
     write_fasta(seqs, prot_path, clean=True, typ='trseq')
 
     if opts.only_translate:
@@ -169,7 +168,7 @@ def main():
                     algt[num] = map (lambda x: nnn.sub('NNN', x), col)
         for (key, seq) in zip (sorted (seqs.keys()), zip (*algt)):
             seqs[key]['codons'] = ''.join(seq)
-            
+
     ###########
     # SEQ MAP
     if opts.printmap:
