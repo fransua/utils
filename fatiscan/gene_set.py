@@ -11,6 +11,11 @@ from bisect import bisect_left
 class Gene_set:
     '''
     Fatiscan with upper case, it is an object.
+    from gene_set import Gene_set
+    infile = '/home/francisco/project/functional_anaysis_vs_evolution/v_56/Mammals/0_dataset/Homo_sapiens.dN_val'
+    annot  = '/home/francisco/project/functional_anaysis_vs_evolution/v_56/Mammals/funcDB/biol_proc_2-8.annot'
+    gaga = Gene_set (infile, annot)
+    lala = gaga.run_gsea()
     '''
     def __init__(self, infile, annot, partitions=30, use_order=True):
         '''
